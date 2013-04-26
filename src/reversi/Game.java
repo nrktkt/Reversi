@@ -191,6 +191,16 @@ public class Game {
 		return false;
 	}
 	
+	public static boolean isGameOver(Board board) {
+		if (!board.hasBlankTiles()) {
+			return true;
+		}
+		if (board.getBlackTiles() == 0 || board.getWhiteTiles() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public void switchTurns() {
 		playerOneTurn = !playerOneTurn;
 		playerReady();
