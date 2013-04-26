@@ -34,18 +34,23 @@ public class AI {
 		else bestMove = new Move(0, 0, player, VERY_HIGH);
 		List<Move> possibleMoves = new ArrayList<Move>();
 		Board temp;
-		if(player == State.WHITE){
-			for(Move currentMove : possibleMoves){
-				//temp = the board after current move is preformed
-				int moveScore = getBestMove(temp, MAX_DEPTH, VERY_LOW, VERY_HIGH, player);// or is it opposite player?
-				if(moveScore >= bestMove.getScore())
+
+		for (Move currentMove : possibleMoves) {
+			if (player == State.WHITE) {
+				// temp = the board after current move is preformed
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, player));// or is it opposite player?
+				if (currentMove.getScore() >= bestMove.getScore())
+					bestMove = currentMove;
+			} else {
+				// temp = the board after current move is preformed
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, player));// or is it opposite player?
+				if (currentMove.getScore() <= bestMove.getScore())
 					bestMove = currentMove;
 			}
+
 		}
-		else{
-			
-		}
-		
 		return bestMove;
 	}
 	/**
@@ -58,7 +63,8 @@ public class AI {
 		// TODO Auto-generated method stub
 		if(depth == 0 || Game.isGameOver(node)){
 		        return the heuristic value of node
-		    if (maximizingPlayer == State){
+		    // white will always try to get the highest board score
+		    if (maximizingPlayer == State.WHITE){
 		        for (each child of node){
 		            a = max(a, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
 		            if (b.compareTo(a) <= 0)
@@ -66,6 +72,7 @@ public class AI {
 		        }
 		        return a;
 		    }
+		    // black will always try to get the lowest board score
 		    else{
 		        for (each child of node){
 		            b = min(b, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
