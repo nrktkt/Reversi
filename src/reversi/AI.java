@@ -3,6 +3,9 @@
  */
 package reversi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import reversi.Tile.State;
 
 /**
@@ -16,6 +19,8 @@ public class AI {
 	private static final double STABILITY_WEIGHT = 1;
 	private static final double SCORE_WEIGHT = 1;
 	private static final int MAX_DEPTH = 5;
+	private static final int VERY_LOW = Integer.MIN_VALUE-200;
+	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
 	/**
 	 * 
 	 * @param board
@@ -24,7 +29,24 @@ public class AI {
 	 */
 	public static Move getBestMove(Board board, Tile.State player){
 		// TODO Auto-generated method stub
-		return new Move(0,0, Tile.State.BLACK);
+		Move bestMove;
+		if(player == State.WHITE) bestMove = new Move(0, 0, player, VERY_LOW);
+		else bestMove = new Move(0, 0, player, VERY_HIGH);
+		List<Move> possibleMoves = new ArrayList<Move>();
+		Board temp;
+		if(player == State.WHITE){
+			for(Move currentMove : possibleMoves){
+				//temp = the board after current move is preformed
+				int moveScore = getBestMove(temp, MAX_DEPTH, VERY_LOW, VERY_HIGH, player);// or is it opposite player?
+				if(moveScore >= bestMove.getScore())
+					bestMove = currentMove;
+			}
+		}
+		else{
+			
+		}
+		
+		return bestMove;
 	}
 	/**
 	 * 
@@ -32,13 +54,13 @@ public class AI {
 	 * @param player
 	 * @return the best move the given player can make on this board
 	 */
-	private static int getBestMove(Board node, int depth, Move a, Move b, State maximizingPlayer){
+	private static int getBestMove(Board node, int depth, int a, int b, State maximizingPlayer){
 		// TODO Auto-generated method stub
 		if(depth == 0 || Game.isGameOver(node)){
 		        return the heuristic value of node
 		    if (maximizingPlayer == State){
 		        for (each child of node){
-		            a := max(a, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
+		            a = max(a, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
 		            if (b.compareTo(a) <= 0)
 		                break;       //(* Beta cut-off *)
 		        }
