@@ -41,4 +41,13 @@ public class AI {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+	public Coordinate<Integer,Integer> getMove(Tile.State player) {
+		
+		//Search for next best move for player
+		
+		//Coordinate move = new Coordinate<Integer,Integer>(1,2);
+		//return move;
+		
+		return null;
+	}
 }
