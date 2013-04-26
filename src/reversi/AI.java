@@ -59,32 +59,50 @@ public class AI {
 	 * @param player
 	 * @return the best move the given player can make on this board
 	 */
-	private static int getBestMove(Board node, int depth, int a, int b, State maximizingPlayer){
+	private static int getBestMove(Board node, int depth, int a, int b,
+			State maximizingPlayer) {
 		// TODO Auto-generated method stub
-		if(depth == 0 || Game.isGameOver(node)){
-		        return the heuristic value of node
-		    // white will always try to get the highest board score
-		    if (maximizingPlayer == State.WHITE){
-		        for (each child of node){
-		            a = max(a, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
-		            if (b.compareTo(a) <= 0)
-		                break;       //(* Beta cut-off *)
-		        }
-		        return a;
-		    }
-		    // black will always try to get the lowest board score
-		    else{
-		        for (each child of node){
-		            b = min(b, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
-		            if (b.compareTo(a) <= 0)
-		                break;                             //(* Alpha cut-off *)
-		        }
-		    }
-		        return b;
+		if (depth == 0 || Game.isGameOver(node))
+			return rateBoard(node);
+		List<Move> possibleMoves = new ArrayList<Move>();
+		// possibleMoves = the moves maximizingPlayer can make
+		Board temp;
+		// white will always try to get the highest board score aka white is max
+		if (maximizingPlayer == State.WHITE) {
+			for (Move move : possibleMoves) {
+				// temp = board after move is made
+				a = max(a, getBestMove(temp, depth - 1, a, b,
+								Tile.getOppositeState(maximizingPlayer)));
+				if (b <= a)
+					break; // (* Beta cut-off *)
+			}
+			return a;
 		}
-		return new Move(0,0, Tile.State.BLACK);
-		
+		// black will always try to get the lowest board score aka black is min
+		else {
+			for (Move move : possibleMoves) {
+				// temp = board after move is made
+				b = min(b, getBestMove(temp, depth - 1, a, b,
+								Tile.getOppositeState(maximizingPlayer)));
+				if (b <= a)
+					break; // (* Alpha cut-off *)
+			}
+
+			return b;
+		}
 	}
+	
+	private static int max(int h, int k){
+		if(h>k)
+			return k;
+		else return h;
+	}
+	private static int min(int h, int k){
+		if(h<k)
+			return k;
+		else return h;
+	}
+	
 	/**
 	 *
 	 * @param board
