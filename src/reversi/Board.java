@@ -3,6 +3,8 @@ package reversi;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.*;
 
@@ -11,6 +13,10 @@ import reversi.Tile.State;
 public class Board extends JFrame {
 	public static final int SIZE = 8;
 	Tile[][] tiles = new Tile[SIZE][SIZE];
+	
+	//The set of all black or white tiles
+	Set<Tile> playerTiles = new HashSet<Tile>();
+	
 	private int blankTiles = 0;
 	private int blackTiles = 0;
 	private int whiteTiles = 0;
@@ -39,10 +45,15 @@ public class Board extends JFrame {
 		final int middle = SIZE / 2;
 		
 		//Setup initial tiles
-		tiles[middle - 1][middle - 1].setState(Tile.State.WHITE);
-		tiles[middle - 1][middle].setState(Tile.State.BLACK);
-		tiles[middle][middle].setState(Tile.State.WHITE);
-		tiles[middle][middle - 1].setState(Tile.State.BLACK);
+		placeTile(middle - 1,middle - 1, Tile.State.WHITE);
+		placeTile(middle - 1,middle, Tile.State.BLACK);
+		placeTile(middle,middle, Tile.State.WHITE);
+		placeTile(middle,middle - 1, Tile.State.BLACK);
+		
+//		tiles[middle - 1][middle - 1].setState(Tile.State.WHITE);
+//		tiles[middle - 1][middle].setState(Tile.State.BLACK);
+//		tiles[middle][middle].setState(Tile.State.WHITE);
+//		tiles[middle][middle - 1].setState(Tile.State.BLACK);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
@@ -125,6 +136,12 @@ public class Board extends JFrame {
 		if (tiles[x][y].getState() == State.BLANK) {
 			setTile(x,y,color);
 		}
+		
+		playerTiles.add(tiles[x][y]);
+	}
+	
+	public Set<Tile> getTileSet() {
+		return playerTiles;
 	}
 	
 	public void setTile(int x, int y, State color){
@@ -155,4 +172,7 @@ public class Board extends JFrame {
 		tiles[x][y].flip();
 	}
 	
+	public Tile[][] getTiles() {
+		return tiles;
+	}
 }
