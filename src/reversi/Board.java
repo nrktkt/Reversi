@@ -13,7 +13,19 @@ import reversi.Tile.State;
 public class Board extends JFrame {
 	public static final int SIZE = 8;
 	Tile[][] tiles = new Tile[SIZE][SIZE];
-	
+
+	//directions for refrencing the CCR
+	public static final int LEFT = 0;
+	public static final int RIGHT = 1;
+	public static final int UP = 2;
+	public static final int DOWN = 3;
+	public static final int UPLEFT = 4;
+	public static final int UPRIGHT = 5;
+	public static final int DOWNLEFT = 6;
+	public static final int DOWNRIGHT = 7;
+
+	private boolean[] CCR = new boolean[8];
+
 	//The set of all black or white tiles
 	Set<Tile> playerTiles = new HashSet<Tile>();
 	
@@ -49,6 +61,8 @@ public class Board extends JFrame {
 		placeTile(middle - 1,middle, Tile.State.BLACK);
 		placeTile(middle,middle, Tile.State.WHITE);
 		placeTile(middle,middle - 1, Tile.State.BLACK);
+		
+		clearCCR();
 		
 //		tiles[middle - 1][middle - 1].setState(Tile.State.WHITE);
 //		tiles[middle - 1][middle].setState(Tile.State.BLACK);
@@ -174,5 +188,325 @@ public class Board extends JFrame {
 	
 	public Tile[][] getTiles() {
 		return tiles;
+	}
+	
+	
+	private void clearCCR(){
+		for(int i = 0; i < Board.SIZE; i++){
+			CCR[i] = false;
+		}
+	}
+
+	public boolean moveFromLeft(int x, int y, State col){
+		if(x-1 >= 0){
+			if(getTile(x-1, y).isBlank())
+				return false;
+			if(getTile(x-1, y).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromLeft(x-1, y, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromRight(int x, int y, State col){
+		if(x+1 <= 7){
+			if(getTile(x+1, y).isBlank())
+				return false;
+			if(getTile(x+1, y).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromRight(x+1, y, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromUp(int x, int y, State col){
+		if(y-1 >= 0){
+			if(getTile(x, y-1).isBlank())
+				return false;
+			if(getTile(x, y-1).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromUp(x, y-1, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromUpRight(int x, int y, State col){
+		if(y-1 >= 0 && x+1 <=7){
+			if(getTile(x+1, y-1).isBlank())
+				return false;
+			if(getTile(x+1, y-1).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromUpRight(x+1, y-1, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromUpLeft(int x, int y, State col){
+		if(y-1 >= 0 && x-1 >=0){
+			if(getTile(x-1, y-1).isBlank())
+				return false;
+			if(getTile(x-1, y-1).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromUpLeft(x-1, y-1, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromDown(int x, int y, State col){
+		if(y+1 <= 7){
+			if(getTile(x, y+1).isBlank())
+				return false;
+			if(getTile(x, y+1).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromDown(x, y+1, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromDownRight(int x, int y, State col){
+		if(y+1 <= 7 && x+1 <= 7){
+			if(getTile(x+1, y+1).isBlank())
+				return false;
+			if(getTile(x+1, y+1).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromDownRight(x+1, y+1, col);
+			}
+		}
+		return false;
+	}
+	public boolean moveFromDownLeft(int x, int y, State col){
+		if(y+1 <= 7 && x-1 >= 0){
+			if(getTile(x-1, y+1).isBlank())
+				return false;
+			if(getTile(x-1, y+1).getState().equals(col)){
+				if(getTile(x, y).isBlank())
+					return false;
+				if(getTile(x, y).getState().equals(col))// may not be needed
+					return false;
+				return true;
+			}
+			else{
+				return moveFromDownLeft(x-1, y+1, col);
+			}
+		}
+		return false;
+	}
+	//need to change null checks to checks for blank state
+	public boolean isValidMove(int x, int y, State player){
+		clearCCR();
+		boolean u = false;
+		boolean	d = false;
+		if(!getTile(x, y).isBlank())
+			return false;
+		if(x != 0){
+			if(moveFromLeft(x,y,player)) //check left
+				CCR[LEFT] = true;
+			if(y != 0){
+				if(moveFromUp(x,y,player))//check up
+					CCR[UP] = true;
+				u = true;
+				//check up-left
+				if(moveFromUpLeft(x,y,player))
+					CCR[UPLEFT] = true;
+			}
+			if(y != 7){
+				if(moveFromDown(x,y,player))//check down
+					CCR[DOWN] = true;
+				d = true;
+				//check down-left
+				if(moveFromDownLeft(x,y,player))
+					CCR[DOWNLEFT] = true;
+			}
+		}
+		if(x != 7){
+			//check right
+			if(moveFromRight(x,y,player))
+				CCR[RIGHT] = true;
+			if(y != 0){
+				//check up-right
+				if(moveFromUpRight(x,y,player))
+					CCR[UPRIGHT] = true;
+				if(!u){
+					//check up
+					if(moveFromUp(x,y,player))
+						CCR[UP] = true;
+				}
+				
+			}
+			if(y != 7){
+				if(!d){
+					//check down
+					if(moveFromDown(x,y,player))
+						CCR[DOWN] = true;
+				}
+				
+				//check down-right
+				if(moveFromDownRight(x,y,player))
+					CCR[DOWNRIGHT] = true;
+			}
+		}
+		for(boolean dir : CCR){
+			if(dir) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	public void flipTiles(int x, int y, Tile.State player) {
+		if(CCR[LEFT]){
+			flipLeft(x, y, player);
+		}
+		if(CCR[RIGHT]){
+			flipRight(x, y, player);
+		}
+		if(CCR[UP]){
+			flipUp(x, y, player);
+		}
+		if(CCR[DOWN]){
+			flipDown(x, y, player);
+		}
+		if(CCR[DOWNLEFT]){
+			flipDownLeft(x, y, player);
+		}
+		if(CCR[DOWNRIGHT]){
+			flipDownRight(x, y, player);
+		}
+		if(CCR[UPLEFT]){
+			flipUpLeft(x, y, player);
+		}
+		if(CCR[UPRIGHT]){
+			flipUpRight(x, y, player);
+		}
+	}
+	
+	/**
+	 * @pre the x,y must have a tile in it
+	 * @param x 
+	 * @param y
+	 * @param player the player who's turn it is
+	 */
+	private void flipLeft(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(x-1 >= 0){
+			if(getTile(x-1, y).getState().equals(Tile.getOppositeState(player)))
+				flipLeft(x-1, y, player);
+		}
+	}
+	private void flipRight(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(x+1 <= 7){
+			if(getTile(x+1, y).getState().equals(Tile.getOppositeState(player)))
+				flipRight(x+1, y, player);
+		}
+	}
+	private void flipUp(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(y-1 >= 0){
+			if(getTile(x, y-1).getState().equals(Tile.getOppositeState(player)))
+				flipUp(x, y-1, player);
+		}
+	}
+	private void flipUpRight(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(y-1 >= 0 && x+1 <= 7){
+			if(getTile(x+1, y-1).getState().equals(Tile.getOppositeState(player)))
+				flipUpRight(x+1, y-1, player);
+		}
+	}
+	private void flipUpLeft(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(y-1 >= 0 && x-1 >= 0){
+			if(getTile(x-1, y-1).getState().equals(Tile.getOppositeState(player)))
+				flipUpLeft(x-1, y-1, player);
+		}
+	}
+	private void flipDown(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(y+1 <= 7){
+			if(getTile(x, y+1).getState().equals(Tile.getOppositeState(player)))
+				flipDown(x, y+1, player);
+		}
+	}
+	private void flipDownLeft(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(y+1 <= 7 && x-1 >= 0){
+			if(getTile(x-1, y+1).getState().equals(Tile.getOppositeState(player)))
+				flipDownLeft(x-1, y+1, player);
+		}
+	}
+	private void flipDownRight(int x, int y, State player){
+		if(getTile(x, y).getState().equals(Tile.getOppositeState(player)))
+		{
+			flipTile(x, y);
+		}
+		if(y+1 <= 7 && x+1 <= 7){
+			if(getTile(x+1, y+1).getState().equals(Tile.getOppositeState(player)))
+				flipDownRight(x+1, y+1, player);
+		}
 	}
 }

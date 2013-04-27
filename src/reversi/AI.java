@@ -61,6 +61,7 @@ public class AI {
 
 		}
 		return bestMove;
+		return null;
 	}
 	/**
 	 * 
@@ -99,6 +100,7 @@ public class AI {
 
 			return b;
 		}
+		return 0;
 	}
 	
 	private static int max(int h, int k){
@@ -143,28 +145,28 @@ public class AI {
 	 */
 	private int getBestMove(int depth, int a, int b, State maximizingPlayer){
 		// TODO Auto-generated method stub
-//		if(depth == 0 || Game.isGameOver(node)) {
-//		        return the heuristic value of node
-//		    // white will always try to get the highest board score
-//		    if (maximizingPlayer == State.WHITE){
-//		        for (each child of node){
-//		            a = max(a, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
-//		            if (b.compareTo(a) <= 0)
-//		                break;       //(* Beta cut-off *)
-//		        }
-//		        return a;
-//		    }
-//		    // black will always try to get the lowest board score
-//		    else{
-//		        for (each child of node){
-//		            b = min(b, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
-//		            if (b.compareTo(a) <= 0)
-//		                break;                             //(* Alpha cut-off *)
-//		        }
-//		    }
-//		        return b;
-//		}
-//		return new Move(0,0, Tile.State.BLACK);
-		return 0;
+		if(depth == 0 || Game.isGameOver(node)) {
+		        return the heuristic value of node
+		    // white will always try to get the highest board score
+		    if (maximizingPlayer == State.WHITE){
+		        for (each child of node){
+		            a = max(a, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
+		            if (b.compareTo(a) <= 0)
+		                break;       //(* Beta cut-off *)
+		        }
+		        return a;
+		    }
+		    // black will always try to get the lowest board score
+		    else{
+		        for (each child of node){
+		            b = min(b, alphabeta(child, depth - 1, a, b, not(maximizingPlayer)))
+		            if (b.compareTo(a) <= 0)
+		                break;                             //(* Alpha cut-off *)
+		        }
+		    }
+		        return b;
+		}
+		return new Move(0,0, Tile.State.BLACK);
+//		return 0;
 	}
 }
