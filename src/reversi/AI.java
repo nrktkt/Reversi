@@ -4,13 +4,9 @@
 package reversi;
 
 import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-=======
-import java.util.List;
->>>>>>> 6c7db4b5db64d6dc8f84118479f2eeb8ad6a5c39
 
 import reversi.Tile.State;
 
@@ -19,11 +15,7 @@ import reversi.Tile.State;
  *
  */
 public class AI {
-<<<<<<< HEAD
 	private static final double FORFEIT_WEIGHT = 1;
-=======
-	private final static double FORFEIT_WEIGHT = 1;
->>>>>>> 6c7db4b5db64d6dc8f84118479f2eeb8ad6a5c39
 	private static final double MOBILITY_WEIGHT = 1;
 	private static final double FRONTIER_WEIGHT = 1;
 	private static final double STABILITY_WEIGHT = 1;
@@ -31,31 +23,13 @@ public class AI {
 	private static final int MAX_DEPTH = 5;
 	private static final int VERY_LOW = Integer.MIN_VALUE-200;
 	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
-<<<<<<< HEAD
 	
 	private Board gameBoard;
 	
 	public AI(Board gameBoard) {
 		this.gameBoard = gameBoard;
 	}
-	
-	/**
-	 * 
-	 * @param player
-	 * @return the best move the given player can make on this board
-	 */
-	public Move getBestMove(Tile.State player){
-		//Get the tiles from the current state of the board.
-		Tile[][] tiles = gameBoard.getTiles();
 
-		Move bestMove;
-		if(player == State.WHITE) {
-			bestMove = new Move(-1, -1, player, VERY_LOW);
-		}
-		else {
-			bestMove = new Move(-1, -1, player, VERY_HIGH);
-		}
-=======
 	/**
 	 * 
 	 * @param board
@@ -148,30 +122,6 @@ public class AI {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	public Coordinate<Integer,Integer> getMove(Tile.State player) {
->>>>>>> 6c7db4b5db64d6dc8f84118479f2eeb8ad6a5c39
-		
-		List<Move> possibleMoves = new ArrayList<Move>();
-		//MinMaxPriorityQueue
-		for (Move currentMove : possibleMoves) {
-			if (player == State.WHITE) {
-				// temp = the board after current move is preformed
-				currentMove.setScore(getBestMove(MAX_DEPTH,VERY_LOW, VERY_HIGH, player));// or is it opposite player?
-				if (currentMove.getScore() >= bestMove.getScore()) {
-					bestMove = currentMove;
-				}
-			} 
-			else {
-				// temp = the board after current move is preformed
-				currentMove.setScore(getBestMove(MAX_DEPTH,VERY_LOW, VERY_HIGH, player));// or is it opposite player?
-				if (currentMove.getScore() <= bestMove.getScore()) {
-					bestMove = currentMove;
-				}
-			}
-
-		}
-		return bestMove;
-	}
 	
 	private Set<Move> getPossibleMoves(Tile[][] tiles) {
 		Set<Move> possibleMoves = new HashSet<Move>();
@@ -215,17 +165,6 @@ public class AI {
 //		        return b;
 //		}
 //		return new Move(0,0, Tile.State.BLACK);
-		return 0;
-	}
-	
-	/**
-	 *
-	 * @param board
-	 * @return a very positive number means the board is favorable for white
-	 * 		while a very negative number means the board is favorable for black
-	 */
-	private int rateBoard(Board board){
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }
