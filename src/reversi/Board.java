@@ -12,6 +12,8 @@ import reversi.Tile.State;
 
 public class Board extends JFrame {
 	public static final int SIZE = 8;
+	
+	//Tiles for GUI
 	Tile[][] tiles = new Tile[SIZE][SIZE];
 
 	//directions for refrencing the CCR
@@ -33,6 +35,19 @@ public class Board extends JFrame {
 	private int blackTiles = 0;
 	private int whiteTiles = 0;
 	private Game game;
+	
+	/**
+	 * creates a board from another board with no GUI
+	 */
+	public Board(Board board) {
+		for (int i = 0; i < SIZE; i++) {
+			for (int j = 0; j < SIZE; j++) {
+				Tile.State tileState = board.getTile(i,j).getState();
+				tiles[i][j] = new Tile(tileState,this,i,j);
+				placeTile(i,j,tileState);
+			}
+		}
+	}
 	
 	/**
 	 * creates a board with tiles in the default positions

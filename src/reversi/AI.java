@@ -125,15 +125,32 @@ public class AI {
 		return 0;
 	}
 	
-	private Set<Move> getPossibleMoves(Tile[][] tiles) {
+	private Set<Move> getPossibleMoves(Board board) {
+		//Set of all possible moves that white or black can make at this turn.
 		Set<Move> possibleMoves = new HashSet<Move>();
-		Set<Tile> playerTiles = gameBoard.getTileSet();
 		
-//		//Check each blank tile around the black and white tiles.
-//		for (Tile tile : playerTiles) {
-//			//Union of the tile's adjacent blanks with ALL adjacent blanks
-//			possibleMoves.addAll(tile.getAdjacentBlanks());
-//		}
+		//Check each tile on the board.
+		for (int i = 0; i < board.SIZE; i++) {
+			for (int j = 0; j < board.SIZE; j++) {
+				//Look at only blank tiles.
+				if (board.getTile(i, j).getState() == Tile.State.BLANK) {
+					//Is it a valid move for player white or player black?
+					boolean whiteValidMove = board.isValidMove(i,j,Tile.State.WHITE);
+					boolean blackValidMove = board.isValidMove(i,j,Tile.State.BLACK);
+					
+					if (whiteValidMove) {
+						//Create the move for white and add to the set of moves.
+						Move possibleMove = new Move(i,j,Tile.State.WHITE);
+						possibleMoves.add(possibleMove);
+					}
+					if (blackValidMove) {
+						//Create the move for black and add to the set of moves.
+						Move possibleMove = new Move(i,j,Tile.State.BLACK);
+						possibleMoves.add(possibleMove);
+					}
+				}
+			}
+		}
 		
 		return possibleMoves;
 	}
