@@ -38,31 +38,43 @@ public class AI {
 	 * @return the best move the given player can make on this board
 	 */
 	public static Move getBestMove(Board board, Tile.State player){
-		// TODO Auto-generated method stub
+		//Initialize the best move to zero
 		Move bestMove;
+		if(player == State.WHITE) {
+			bestMove = new Move(0, 0, player, VERY_LOW);
+		}
+		else {
+			bestMove = new Move(0, 0, player, VERY_HIGH);
+		}
 		
-		if(player == State.WHITE) bestMove = new Move(0, 0, player, VERY_LOW);
-		else bestMove = new Move(0, 0, player, VERY_HIGH);
-		
+		//The set of all possible moves for a given player
 		Set<Move> possibleMoves = getPossibleMoves(board, player);
+		//The temporary board used for visualizing possible move sequences
 		VirtualBoard temp;
 
 		for (Move currentMove : possibleMoves) {
 			// apply the current move
 			temp = new VirtualBoard(board);
-			if(temp.isValidMove(currentMove.getX(), currentMove.getY(), player))
+			if(temp.isValidMove(currentMove.getX(), currentMove.getY(), player)) {
 				temp.flipTiles(currentMove.getX(), currentMove.getY(), player);
+			}
 			
+			//finds the best move for player white or player black
 			if (player == State.WHITE) {
+				//Recursive call for alpha beta pruning 
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
 						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
-				if (currentMove.getScore() >= bestMove.getScore())
+				if (currentMove.getScore() >= bestMove.getScore()) {
 					bestMove = currentMove;
-			} else {
+				}
+			} 
+			else {
+				//Recursive call for alpha beta pruning 
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
 						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
-				if (currentMove.getScore() <= bestMove.getScore())
+				if (currentMove.getScore() <= bestMove.getScore()) {
 					bestMove = currentMove;
+				}
 			}
 
 		}
@@ -74,27 +86,26 @@ public class AI {
 	 * @param player
 	 * @return the best move the given player can make on this board
 	 */
-	private static int getBestMove(VirtualBoard node, int depth, int a, int b,
-			State maximizingPlayer) {
+	private static int getBestMove(VirtualBoard node, int depth, int a, int b, State maximizingPlayer) {
 		int an = a, bn = b;
-		// TODO Auto-generated method stub
-		if (depth == 0 || Game.isGameOver(node))
+		if (depth == 0 || Game.isGameOver(node)) {
 			return rateBoard(node);
+		}
+		
 		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
-		// possibleMoves = the moves maximizingPlayer can make
 		VirtualBoard temp;
 		// white will always try to get the highest board score aka white is max
 		if (maximizingPlayer == State.WHITE) {
 			for (Move move : possibleMoves) {
 				// apply the current move
 				temp = new VirtualBoard(node);
-				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer))
+				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
-				
-				an = max(a, getBestMove(temp, depth - 1, an, bn,
-								Tile.getOppositeState(maximizingPlayer)));
-				if (bn <= an)
+				}
+				an = Math.max(a, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer)));
+				if (bn <= an) {
 					break; // (* Beta cut-off *)
+				}
 			}
 			return an;
 		}
@@ -103,29 +114,18 @@ public class AI {
 			for (Move move : possibleMoves) {
 				// apply the current move
 				temp = new VirtualBoard(node);
-				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer))
+				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
-				
-				bn = min(b, getBestMove(temp, depth - 1, an, bn,
-								Tile.getOppositeState(maximizingPlayer)));
-				if (bn <= an)
+				}
+				bn = Math.min(b, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer)));
+				if (bn <= an) {
 					break; // (* Alpha cut-off *)
+				}
 			}
 			return bn;
 		}
 	}
-	
-	private static int max(int h, int k){
-		if(h>k)
-			return k;
-		else return h;
-	}
-	private static int min(int h, int k){
-		if(h<k)
-			return k;
-		else return h;
-	}
-	
+		
 	/**
 	 *
 	 * @param board
@@ -148,7 +148,7 @@ public class AI {
 	 * @return -1 if white would forfeit a turn on this board, 1 if black would forfeit, else 0
 	 */
 	private static int getForfeit(VirtualBoard board){
-int rating = 0;
+		int rating = 0;
 		
 		return rating;
 	}
@@ -159,7 +159,7 @@ int rating = 0;
 	 * @return number of moves white can make - num moves black can make
 	 */
 	private static int getMobility(VirtualBoard board){
-int rating = 0;
+		int rating = 0;
 		
 		return rating;
 	}
@@ -170,7 +170,7 @@ int rating = 0;
 	 * @return
 	 */
 	private static int getFrontier(VirtualBoard board){
-int rating = 0;
+		int rating = 0;
 		
 		return rating;
 	}
@@ -180,7 +180,7 @@ int rating = 0;
 	 * @return
 	 */
 	private static int getStability(VirtualBoard board){
-int rating = 0;
+		int rating = 0;
 		
 		return rating;
 	}
@@ -197,35 +197,6 @@ int rating = 0;
 		return rating;
 	}
 	
-	private static Set<Move> getPossibleMoves(Board board) {
-		//Set of all possible moves that white or black can make at this turn.
-		Set<Move> possibleMoves = new HashSet<Move>();
-		
-		//Check each tile on the board.
-		for (int i = 0; i < board.SIZE; i++) {
-			for (int j = 0; j < board.SIZE; j++) {
-				//Look at only blank tiles.
-				if (board.getTile(i, j).getState() == Tile.State.BLANK) {
-					//Is it a valid move for player white or player black?
-					boolean whiteValidMove = board.isValidMove(i,j,Tile.State.WHITE);
-					boolean blackValidMove = board.isValidMove(i,j,Tile.State.BLACK);
-					
-					if (whiteValidMove) {
-						//Create the move for white and add to the set of moves.
-						Move possibleMove = new Move(i,j,Tile.State.WHITE);
-						possibleMoves.add(possibleMove);
-					}
-					if (blackValidMove) {
-						//Create the move for black and add to the set of moves.
-						Move possibleMove = new Move(i,j,Tile.State.BLACK);
-						possibleMoves.add(possibleMove);
-					}
-				}
-			}
-		}
-		
-		return possibleMoves;
-	}
 	/**
 	 * 
 	 * @param board
@@ -250,11 +221,6 @@ int rating = 0;
 						Move possibleMove = new Move(i,j,player);
 						possibleMoves.add(possibleMove);
 					}
-//					if (blackValidMove) {
-//						//Create the move for black and add to the set of moves.
-//						Move possibleMove = new Move(i,j,Tile.State.BLACK);
-//						possibleMoves.add(possibleMove);
-//					}
 				}
 			}
 		}
@@ -279,11 +245,6 @@ int rating = 0;
 						Move possibleMove = new Move(i,j,player);
 						possibleMoves.add(possibleMove);
 					}
-//					if (blackValidMove) {
-//						//Create the move for black and add to the set of moves.
-//						Move possibleMove = new Move(i,j,Tile.State.BLACK);
-//						possibleMoves.add(possibleMove);
-//					}
 				}
 			}
 		}

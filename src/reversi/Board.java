@@ -1,8 +1,6 @@
 package reversi;
 
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -78,11 +76,6 @@ public class Board extends JFrame {
 		placeTile(middle,middle - 1, Tile.State.BLACK);
 		
 		clearCCR();
-		
-//		tiles[middle - 1][middle - 1].setState(Tile.State.WHITE);
-//		tiles[middle - 1][middle].setState(Tile.State.BLACK);
-//		tiles[middle][middle].setState(Tile.State.WHITE);
-//		tiles[middle][middle - 1].setState(Tile.State.BLACK);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);

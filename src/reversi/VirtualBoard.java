@@ -1,12 +1,7 @@
 package reversi;
 
-import java.awt.Color;
-import java.awt.GridLayout;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.swing.JFrame;
-
 import reversi.Tile.State;
 
 public class VirtualBoard{// implements BoardForm{

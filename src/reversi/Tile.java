@@ -31,10 +31,8 @@ public class Tile extends JButton implements ActionListener, TileForm{
 	public static final String WHITE_HI_IMG = "../resources/white_tile_highlight.png";
 	public static final String BLANK_IMG = "../resources/blank_tile.png";
 
-	//private String side;
 	private State state = State.BLANK;
 	private Board board;
-	private boolean highLighted = false;
 	private int x;
 	private int y;
 	
@@ -144,12 +142,10 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		Image newimg = img.getScaledInstance( 50, 50,  java.awt.Image.SCALE_SMOOTH ) ;  
 		ImageIcon icon = new ImageIcon(newimg);
 		setIcon(icon);
-		highLighted = true;
 	}
 	
 	public void lowlight(){
 		setImage(state);
-		highLighted = false;
 	}
 
 	public State getState(){
