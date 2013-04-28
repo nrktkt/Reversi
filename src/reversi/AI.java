@@ -154,5 +154,40 @@ public class AI {
 		
 		return possibleMoves;
 	}
+	/**
+	 * 
+	 * @param board
+	 * @param player
+	 * @return set of all possible moves for given player
+	 */
+	private Set<Move> getPossibleMoves(Board board, State player) {
+		//Set of all possible moves that white or black can make at this turn.
+		Set<Move> possibleMoves = new HashSet<Move>();
+		
+		//Check each tile on the board.
+		for (int i = 0; i < board.SIZE; i++) {
+			for (int j = 0; j < board.SIZE; j++) {
+				//Look at only blank tiles.
+				if (board.getTile(i, j).getState() == Tile.State.BLANK) {
+					//Is it a valid move for player
+					boolean ValidMove = board.isValidMove(i,j,player);
+					//boolean blackValidMove = board.isValidMove(i,j,Tile.State.BLACK);
+					
+					if (ValidMove) {
+						//Create the move for white and add to the set of moves.
+						Move possibleMove = new Move(i,j,player);
+						possibleMoves.add(possibleMove);
+					}
+//					if (blackValidMove) {
+//						//Create the move for black and add to the set of moves.
+//						Move possibleMove = new Move(i,j,Tile.State.BLACK);
+//						possibleMoves.add(possibleMove);
+//					}
+				}
+			}
+		}
+		
+		return possibleMoves;
+	}
 	
 }
