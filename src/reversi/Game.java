@@ -7,10 +7,14 @@ import javax.swing.JOptionPane;
 import reversi.Tile.State;
 
 public class Game {
+	public enum Intelligence {
+		HUMAN, AI;
+	}
+
 	public Board board;
 	private boolean playerOneTurn = true;
-	private Tile.State playerOne;
-	private Tile.State playerTwo;
+	private Tile.State playerOne, playerTwo;
+	private Intelligence playerOneIntelligence, playerTwoIntelligence;
 	private ScoreBoard scoreBoard;
 	//ccr code [l,r,u,d,ul,ur,dl,dr]
 	
@@ -21,6 +25,7 @@ public class Game {
 	public Game(){
 		board = new Board(this);
 		blackOrWhite();
+		humanOrAI();
 		this.scoreBoard = new ScoreBoard(this);
 
 		scoreBoard.setPlayerOneScore(getPlayerOneScore());
@@ -69,6 +74,42 @@ public class Game {
 		}
 	}
 	
+	public void humanOrAI() {
+		//Custom button text
+		Object[] options = {"Human",
+		                    "AI"};
+		int n = JOptionPane.showOptionDialog(new Frame(),
+		    "Player 1: Are you human or AI?",
+		    "Black or White",
+		    JOptionPane.YES_NO_CANCEL_OPTION,
+		    JOptionPane.QUESTION_MESSAGE,
+		    null,
+		    options,
+		    options[1]);
+		if (n == 1) {
+			playerOneIntelligence = Intelligence.AI;
+		}
+		else {
+			playerOneIntelligence = Intelligence.HUMAN;
+		}
+		Object[] options2 = {"Human",
+        "AI"};
+		int m = JOptionPane.showOptionDialog(new Frame(),
+				"Player 2: Are you human or AI?",
+				"Black or White",
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options2,
+				options2[1]);
+		if (m == 1) {
+			playerTwoIntelligence = Intelligence.AI;
+		}
+		else {
+			playerTwoIntelligence = Intelligence.HUMAN;
+		}
+	}
+	
 	public State getCurrentPlayer() {
 		if (playerOneTurn) {
 			return playerOne;
@@ -89,15 +130,12 @@ public class Game {
 	public void giveAIAdvice(){
 		System.out.println(AI.getBestMove(board, getCurrentPlayer()));
 	}
-	public void playAIGame(){
+	public void makeMoveAI(){
 		Move best = AI.getBestMove(board, getCurrentPlayer());
 		System.out.println(best);
 		tileClick(best.getX(), best.getY());
 	}
 	public void playerReady() {
-		
-		//giveAIAdvice();
-		playAIGame();
 		Object[] options = {"THANKS!!!"};
 		JOptionPane.showOptionDialog(new Frame(),
 			currentPlayerString()+": ARE YOU READY!?!??!!?!?",
@@ -107,6 +145,12 @@ public class Game {
 		    null,
 		    options,
 		    options[0]);
+		
+		//If the player is AI, make an AI move
+		if ((playerOneTurn && playerOneIntelligence == Intelligence.AI) ||
+				(!playerOneTurn && playerTwoIntelligence == Intelligence.AI)) {
+			makeMoveAI();
+		}
 	}
 	
 	public boolean playerConfirmation() {
