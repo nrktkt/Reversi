@@ -42,18 +42,21 @@ public class AI {
 		Move bestMove;
 		if(player == State.WHITE) bestMove = new Move(0, 0, player, VERY_LOW);
 		else bestMove = new Move(0, 0, player, VERY_HIGH);
-		Set<Move> possibleMoves = getPossibleMoves(board);
+		Set<Move> possibleMoves = getPossibleMoves(board, player);
 		Board temp;
 
 		for (Move currentMove : possibleMoves) {
+			// apply the current move
+			temp = new Board(board);
+			if(temp.isValidMove(currentMove.getX(), currentMove.getY(), player))
+				temp.flipTiles(currentMove.getX(), currentMove.getY(), player);
+			
 			if (player == State.WHITE) {
-				// temp = the board after current move is preformed
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
 						VERY_HIGH, player));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore())
 					bestMove = currentMove;
 			} else {
-				// temp = the board after current move is preformed
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
 						VERY_HIGH, player));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore())
@@ -74,13 +77,17 @@ public class AI {
 		// TODO Auto-generated method stub
 		if (depth == 0 || Game.isGameOver(node))
 			return rateBoard(node);
-		Set<Move> possibleMoves = getPossibleMoves(node);
+		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
 		// possibleMoves = the moves maximizingPlayer can make
 		Board temp;
 		// white will always try to get the highest board score aka white is max
 		if (maximizingPlayer == State.WHITE) {
 			for (Move move : possibleMoves) {
-				// temp = board after move is made
+				// apply the current move
+				temp = new Board(node);
+				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer))
+					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
+				
 				a = max(a, getBestMove(temp, depth - 1, a, b,
 								Tile.getOppositeState(maximizingPlayer)));
 				if (b <= a)
@@ -91,16 +98,18 @@ public class AI {
 		// black will always try to get the lowest board score aka black is min
 		else {
 			for (Move move : possibleMoves) {
-				// temp = board after move is made
+				// apply the current move
+				temp = new Board(node);
+				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer))
+					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
+				
 				b = min(b, getBestMove(temp, depth - 1, a, b,
 								Tile.getOppositeState(maximizingPlayer)));
 				if (b <= a)
 					break; // (* Alpha cut-off *)
 			}
-
 			return b;
 		}
-		return 0;
 	}
 	
 	private static int max(int h, int k){
