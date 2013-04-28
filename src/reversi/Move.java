@@ -46,13 +46,16 @@ public class Move implements Comparable {
 		this.forfeit = forfeit;
 	}
 
+	private String getCharForNumber(int i) {
+	    return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
+	}
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "Move [x=" + x + ", y=" + y + ", player=" + player + ", score="
+		return "Move [("+getCharForNumber(y+1)+","+(x+1)+") x=" + x + ", y=" + y + ", player=" + player + ", score="
 				+ score + ", forfeit=" + forfeit + "]";
 	}
 
