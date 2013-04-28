@@ -121,8 +121,63 @@ public class AI {
 	 * 		while a very negative number means the board is favorable for black
 	 */
 	private static int rateBoard(Board board){
-		// TODO Auto-generated method stub
-		return 0;
+		int rating = 0;
+		
+		return rating;
+	}
+	
+	/**
+	 * -1 if white would forfeit a turn on this board, 1 if black would forfeit, else 0
+	 * @param board
+	 * @return -1 if white would forfeit a turn on this board, 1 if black would forfeit, else 0
+	 */
+	private int getForfeit(Board board){
+int rating = 0;
+		
+		return rating;
+	}
+	
+	/**
+	 * rating based on how many moves each player can make
+	 * @param board
+	 * @return number of moves white can make - num moves black can make
+	 */
+	private int getMobility(Board board){
+int rating = 0;
+		
+		return rating;
+	}
+	
+	/**
+	 * rating based on how many disks are next to empty spaces
+	 * @param board
+	 * @return
+	 */
+	private int getFrontier(Board board){
+int rating = 0;
+		
+		return rating;
+	}
+	/**
+	 * rating based on how many disks are unflippable
+	 * @param board
+	 * @return
+	 */
+	private int getStability(Board board){
+int rating = 0;
+		
+		return rating;
+	}
+	
+	/**
+	 * rating based on the current score of the game
+	 * @param board
+	 * @return
+	 */
+	private int getScore(Board board){
+int rating = 0;
+		
+		return rating;
 	}
 	
 	private Set<Move> getPossibleMoves(Board board) {
