@@ -15,12 +15,14 @@ public class Move implements Comparable {
 	private int x, y;
 	private State player;
 	private int score; // how good the move is for the player
+	private boolean forfeit;
 
 	public Move(int x, int y, State player) {
 		this.x = x;
 		this.y = y;
 		this.player = player;
 		score = 0;
+		forfeit = false;
 	}
 
 	public Move(int x, int y, State player, int score) {
@@ -28,15 +30,32 @@ public class Move implements Comparable {
 		this.y = y;
 		this.player = player;
 		this.score = score;
+		forfeit = false;
 	}
-/* (non-Javadoc)
+/**
+	 * @return the forfeit
+	 */
+	public boolean isForfeit() {
+		return forfeit;
+	}
+
+	/**
+	 * @param forfeit the forfeit to set
+	 */
+	public void setForfeit(boolean forfeit) {
+		this.forfeit = forfeit;
+	}
+
+
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "Move [x=" + x + ", y=" + y + ", player=" + player + ", score="
-				+ score + "]";
+				+ score + ", forfeit=" + forfeit + "]";
 	}
+
 	/**
 	 * @return the score
 	 */
