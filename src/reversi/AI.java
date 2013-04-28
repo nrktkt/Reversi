@@ -6,6 +6,7 @@ package reversi;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import reversi.Tile.State;
@@ -41,7 +42,7 @@ public class AI {
 		Move bestMove;
 		if(player == State.WHITE) bestMove = new Move(0, 0, player, VERY_LOW);
 		else bestMove = new Move(0, 0, player, VERY_HIGH);
-		List<Move> possibleMoves = new ArrayList<Move>();
+		Set<Move> possibleMoves = getPossibleMoves(board);
 		Board temp;
 
 		for (Move currentMove : possibleMoves) {
@@ -61,7 +62,6 @@ public class AI {
 
 		}
 		return bestMove;
-		return null;
 	}
 	/**
 	 * 
@@ -74,7 +74,7 @@ public class AI {
 		// TODO Auto-generated method stub
 		if (depth == 0 || Game.isGameOver(node))
 			return rateBoard(node);
-		List<Move> possibleMoves = new ArrayList<Move>();
+		Set<Move> possibleMoves = getPossibleMoves(node);
 		// possibleMoves = the moves maximizingPlayer can make
 		Board temp;
 		// white will always try to get the highest board score aka white is max
@@ -122,7 +122,11 @@ public class AI {
 	 */
 	private static int rateBoard(Board board){
 		int rating = 0;
-		
+		rating += getForfeit(board) * FORFEIT_WEIGHT;
+		rating += getMobility(board) * MOBILITY_WEIGHT;
+		rating += getFrontier(board) * FRONTIER_WEIGHT;
+		rating += getStability(board) * STABILITY_WEIGHT;
+		rating += getScore(board) * SCORE_WEIGHT;
 		return rating;
 	}
 	
@@ -131,7 +135,7 @@ public class AI {
 	 * @param board
 	 * @return -1 if white would forfeit a turn on this board, 1 if black would forfeit, else 0
 	 */
-	private int getForfeit(Board board){
+	private static int getForfeit(Board board){
 int rating = 0;
 		
 		return rating;
@@ -142,7 +146,7 @@ int rating = 0;
 	 * @param board
 	 * @return number of moves white can make - num moves black can make
 	 */
-	private int getMobility(Board board){
+	private static int getMobility(Board board){
 int rating = 0;
 		
 		return rating;
@@ -153,7 +157,7 @@ int rating = 0;
 	 * @param board
 	 * @return
 	 */
-	private int getFrontier(Board board){
+	private static int getFrontier(Board board){
 int rating = 0;
 		
 		return rating;
@@ -163,7 +167,7 @@ int rating = 0;
 	 * @param board
 	 * @return
 	 */
-	private int getStability(Board board){
+	private static int getStability(Board board){
 int rating = 0;
 		
 		return rating;
@@ -174,13 +178,13 @@ int rating = 0;
 	 * @param board
 	 * @return
 	 */
-	private int getScore(Board board){
+	private static int getScore(Board board){
 int rating = 0;
 		
 		return rating;
 	}
 	
-	private Set<Move> getPossibleMoves(Board board) {
+	private static Set<Move> getPossibleMoves(Board board) {
 		//Set of all possible moves that white or black can make at this turn.
 		Set<Move> possibleMoves = new HashSet<Move>();
 		
@@ -215,7 +219,7 @@ int rating = 0;
 	 * @param player
 	 * @return set of all possible moves for given player
 	 */
-	private Set<Move> getPossibleMoves(Board board, State player) {
+	private static Set<Move> getPossibleMoves(Board board, State player) {
 		//Set of all possible moves that white or black can make at this turn.
 		Set<Move> possibleMoves = new HashSet<Move>();
 		
