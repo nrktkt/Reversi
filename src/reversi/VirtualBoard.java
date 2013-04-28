@@ -51,25 +51,6 @@ public static final int SIZE = 8;
 			}
 		}
 	}
-	
-	/**
-	 * creates a board with tiles in the default positions
-	 */
-	public VirtualBoard(Game game){	
-		this.game = game;
-			
-		
-		//Middle of Board
-		final int middle = SIZE / 2;
-		
-		//Setup initial tiles
-		placeTile(middle - 1,middle - 1, State.WHITE);
-		placeTile(middle - 1,middle, State.BLACK);
-		placeTile(middle,middle, State.WHITE);
-		placeTile(middle,middle - 1, State.BLACK);
-		
-		clearCCR();
-	}
 		
 	public void addTile(State tile) {
 		switch (tile) {
@@ -115,14 +96,6 @@ public static final int SIZE = 8;
 		game.tileClick(x, y);
 	}
 
-//	public void unHighLightTiles() {
-//		for (int i = 0; i < SIZE; i++) {
-//			for (int j = 0; j < SIZE; j++) {
-//				tiles[i][j].lowlight();
-//			}
-//		}
-//	}
-	
 	public boolean hasBlankTiles() {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
@@ -195,7 +168,7 @@ public static final int SIZE = 8;
 		}
 	}
 
-	public boolean moveFromLeft(int x, int y, State col){
+	private boolean moveFromLeft(int x, int y, State col){
 		if(x-1 >= 0){
 			if(getTile(x-1, y).isBlank())
 				return false;
@@ -212,7 +185,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromRight(int x, int y, State col){
+	
+	private boolean moveFromRight(int x, int y, State col){
 		if(x+1 <= 7){
 			if(getTile(x+1, y).isBlank())
 				return false;
@@ -229,7 +203,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromUp(int x, int y, State col){
+	
+	private boolean moveFromUp(int x, int y, State col){
 		if(y-1 >= 0){
 			if(getTile(x, y-1).isBlank())
 				return false;
@@ -246,7 +221,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromUpRight(int x, int y, State col){
+	
+	private boolean moveFromUpRight(int x, int y, State col){
 		if(y-1 >= 0 && x+1 <=7){
 			if(getTile(x+1, y-1).isBlank())
 				return false;
@@ -263,7 +239,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromUpLeft(int x, int y, State col){
+	
+	private boolean moveFromUpLeft(int x, int y, State col){
 		if(y-1 >= 0 && x-1 >=0){
 			if(getTile(x-1, y-1).isBlank())
 				return false;
@@ -280,7 +257,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromDown(int x, int y, State col){
+	
+	private boolean moveFromDown(int x, int y, State col){
 		if(y+1 <= 7){
 			if(getTile(x, y+1).isBlank())
 				return false;
@@ -297,7 +275,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromDownRight(int x, int y, State col){
+	
+	private boolean moveFromDownRight(int x, int y, State col){
 		if(y+1 <= 7 && x+1 <= 7){
 			if(getTile(x+1, y+1).isBlank())
 				return false;
@@ -314,7 +293,8 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
-	public boolean moveFromDownLeft(int x, int y, State col){
+	
+	private boolean moveFromDownLeft(int x, int y, State col){
 		if(y+1 <= 7 && x-1 >= 0){
 			if(getTile(x-1, y+1).isBlank())
 				return false;
@@ -331,6 +311,7 @@ public static final int SIZE = 8;
 		}
 		return false;
 	}
+	
 	//need to change null checks to checks for blank state
 	public boolean isValidMove(int x, int y, State player){
 		clearCCR();

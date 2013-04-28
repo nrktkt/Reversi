@@ -205,7 +205,7 @@ public class Board extends JFrame {
 		}
 	}
 
-	public boolean moveFromLeft(int x, int y, State col){
+	private boolean moveFromLeft(int x, int y, State col){
 		if(x-1 >= 0){
 			if(getTile(x-1, y).isBlank())
 				return false;
@@ -222,7 +222,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromRight(int x, int y, State col){
+	
+	private boolean moveFromRight(int x, int y, State col){
 		if(x+1 <= 7){
 			if(getTile(x+1, y).isBlank())
 				return false;
@@ -239,7 +240,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromUp(int x, int y, State col){
+	
+	private boolean moveFromUp(int x, int y, State col){
 		if(y-1 >= 0){
 			if(getTile(x, y-1).isBlank())
 				return false;
@@ -256,7 +258,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromUpRight(int x, int y, State col){
+	
+	private boolean moveFromUpRight(int x, int y, State col){
 		if(y-1 >= 0 && x+1 <=7){
 			if(getTile(x+1, y-1).isBlank())
 				return false;
@@ -273,7 +276,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromUpLeft(int x, int y, State col){
+	
+	private boolean moveFromUpLeft(int x, int y, State col){
 		if(y-1 >= 0 && x-1 >=0){
 			if(getTile(x-1, y-1).isBlank())
 				return false;
@@ -290,7 +294,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromDown(int x, int y, State col){
+	
+	private boolean moveFromDown(int x, int y, State col){
 		if(y+1 <= 7){
 			if(getTile(x, y+1).isBlank())
 				return false;
@@ -307,7 +312,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromDownRight(int x, int y, State col){
+	
+	private boolean moveFromDownRight(int x, int y, State col){
 		if(y+1 <= 7 && x+1 <= 7){
 			if(getTile(x+1, y+1).isBlank())
 				return false;
@@ -324,7 +330,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	public boolean moveFromDownLeft(int x, int y, State col){
+	
+	private boolean moveFromDownLeft(int x, int y, State col){
 		if(y+1 <= 7 && x-1 >= 0){
 			if(getTile(x-1, y+1).isBlank())
 				return false;
