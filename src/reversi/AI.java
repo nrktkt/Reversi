@@ -40,6 +40,9 @@ public class AI {
 	public static Move getBestMove(Board board, Tile.State player){
 		//Initialize the best move to zero
 		Move bestMove;
+		// idea: player should forefeit his turn if he cannot make a move that returns a board better than the one he is already in
+//		bestMove = new Move(0, 0, player, rateBoard(new VirtualBoard(board)));
+//		bestMove.setForfeit(true);
 		if(player == State.WHITE) {
 			bestMove = new Move(0, 0, player, VERY_LOW);
 		}
@@ -149,7 +152,12 @@ public class AI {
 	 */
 	private static int getForfeit(VirtualBoard board){
 		int rating = 0;
-		
+		//case where players have no moves
+		if(getPossibleMoves(board, State.WHITE).isEmpty())
+			rating --;
+		if(getPossibleMoves(board, State.BLACK).isEmpty())
+			rating ++;
+		//case where players choose to skip turn
 		return rating;
 	}
 	
@@ -159,9 +167,7 @@ public class AI {
 	 * @return number of moves white can make - num moves black can make
 	 */
 	private static int getMobility(VirtualBoard board){
-		int rating = 0;
-		
-		return rating;
+		return getPossibleMoves(board, State.WHITE).size() - getPossibleMoves(board, State.BLACK).size();
 	}
 	
 	/**
