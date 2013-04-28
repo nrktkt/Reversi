@@ -11,9 +11,18 @@ import javax.swing.JButton;
  * @author kAG0
  *
  */
-public class Tile extends JButton implements ActionListener {
+public class Tile extends JButton implements ActionListener, TileForm{
 	public enum State {
-		BLACK, WHITE, BLANK
+		BLACK, WHITE, BLANK;
+		public static State getOppositeState(State state){
+			if(state == State.BLANK)
+				return State.BLANK;
+			if(state == State.BLACK)
+				return State.WHITE;
+			else {
+				return State.BLACK;
+			}
+		}
 	}
 	
 	public static final String BLACK_IMG = "../resources/black_tile.png";
@@ -80,6 +89,7 @@ public class Tile extends JButton implements ActionListener {
 			return State.BLACK;
 		}
 	}
+	
 	public static State getOppositeState(State state){
 		if(state == State.BLANK)
 			return State.BLANK;

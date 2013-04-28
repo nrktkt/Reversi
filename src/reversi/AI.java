@@ -22,7 +22,7 @@ public class AI {
 	private static final double STABILITY_WEIGHT = 1;
 	private static final double SCORE_WEIGHT = 1;
 	private static final int MAX_DEPTH = 5;
-	private static final int VERY_LOW = Integer.MIN_VALUE-200;
+	private static final int VERY_LOW = Integer.MIN_VALUE+200;
 	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
 	
 	private Board gameBoard;
@@ -40,25 +40,27 @@ public class AI {
 	public static Move getBestMove(Board board, Tile.State player){
 		// TODO Auto-generated method stub
 		Move bestMove;
+		
 		if(player == State.WHITE) bestMove = new Move(0, 0, player, VERY_LOW);
 		else bestMove = new Move(0, 0, player, VERY_HIGH);
+		
 		Set<Move> possibleMoves = getPossibleMoves(board, player);
-		Board temp;
+		VirtualBoard temp;
 
 		for (Move currentMove : possibleMoves) {
 			// apply the current move
-			temp = new Board(board);
+			temp = new VirtualBoard(board);
 			if(temp.isValidMove(currentMove.getX(), currentMove.getY(), player))
 				temp.flipTiles(currentMove.getX(), currentMove.getY(), player);
 			
 			if (player == State.WHITE) {
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
-						VERY_HIGH, player));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
+						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore())
 					bestMove = currentMove;
 			} else {
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
-						VERY_HIGH, player));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
+						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore())
 					bestMove = currentMove;
 			}
@@ -72,43 +74,44 @@ public class AI {
 	 * @param player
 	 * @return the best move the given player can make on this board
 	 */
-	private static int getBestMove(Board node, int depth, int a, int b,
+	private static int getBestMove(VirtualBoard node, int depth, int a, int b,
 			State maximizingPlayer) {
+		int an = a, bn = b;
 		// TODO Auto-generated method stub
 		if (depth == 0 || Game.isGameOver(node))
 			return rateBoard(node);
 		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
 		// possibleMoves = the moves maximizingPlayer can make
-		Board temp;
+		VirtualBoard temp;
 		// white will always try to get the highest board score aka white is max
 		if (maximizingPlayer == State.WHITE) {
 			for (Move move : possibleMoves) {
 				// apply the current move
-				temp = new Board(node);
+				temp = new VirtualBoard(node);
 				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer))
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
 				
-				a = max(a, getBestMove(temp, depth - 1, a, b,
+				an = max(a, getBestMove(temp, depth - 1, an, bn,
 								Tile.getOppositeState(maximizingPlayer)));
-				if (b <= a)
+				if (bn <= an)
 					break; // (* Beta cut-off *)
 			}
-			return a;
+			return an;
 		}
 		// black will always try to get the lowest board score aka black is min
 		else {
 			for (Move move : possibleMoves) {
 				// apply the current move
-				temp = new Board(node);
+				temp = new VirtualBoard(node);
 				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer))
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
 				
-				b = min(b, getBestMove(temp, depth - 1, a, b,
+				bn = min(b, getBestMove(temp, depth - 1, an, bn,
 								Tile.getOppositeState(maximizingPlayer)));
-				if (b <= a)
+				if (bn <= an)
 					break; // (* Alpha cut-off *)
 			}
-			return b;
+			return bn;
 		}
 	}
 	
@@ -129,7 +132,7 @@ public class AI {
 	 * @return a very positive number means the board is favorable for white
 	 * 		while a very negative number means the board is favorable for black
 	 */
-	private static int rateBoard(Board board){
+	private static int rateBoard(VirtualBoard board){
 		int rating = 0;
 		rating += getForfeit(board) * FORFEIT_WEIGHT;
 		rating += getMobility(board) * MOBILITY_WEIGHT;
@@ -144,7 +147,7 @@ public class AI {
 	 * @param board
 	 * @return -1 if white would forfeit a turn on this board, 1 if black would forfeit, else 0
 	 */
-	private static int getForfeit(Board board){
+	private static int getForfeit(VirtualBoard board){
 int rating = 0;
 		
 		return rating;
@@ -155,7 +158,7 @@ int rating = 0;
 	 * @param board
 	 * @return number of moves white can make - num moves black can make
 	 */
-	private static int getMobility(Board board){
+	private static int getMobility(VirtualBoard board){
 int rating = 0;
 		
 		return rating;
@@ -166,7 +169,7 @@ int rating = 0;
 	 * @param board
 	 * @return
 	 */
-	private static int getFrontier(Board board){
+	private static int getFrontier(VirtualBoard board){
 int rating = 0;
 		
 		return rating;
@@ -176,7 +179,7 @@ int rating = 0;
 	 * @param board
 	 * @return
 	 */
-	private static int getStability(Board board){
+	private static int getStability(VirtualBoard board){
 int rating = 0;
 		
 		return rating;
@@ -187,9 +190,10 @@ int rating = 0;
 	 * @param board
 	 * @return
 	 */
-	private static int getScore(Board board){
-int rating = 0;
-		
+	private static int getScore(VirtualBoard board){
+		int rating = 0;
+		rating += board.getWhiteTiles();
+		rating -= board.getBlackTiles();
 		return rating;
 	}
 	
@@ -257,5 +261,33 @@ int rating = 0;
 		
 		return possibleMoves;
 	}
-	
+	private static Set<Move> getPossibleMoves(VirtualBoard board, State player) {
+		//Set of all possible moves that white or black can make at this turn.
+		Set<Move> possibleMoves = new HashSet<Move>();
+		
+		//Check each tile on the board.
+		for (int i = 0; i < board.SIZE; i++) {
+			for (int j = 0; j < board.SIZE; j++) {
+				//Look at only blank tiles.
+				if (board.getTile(i, j).getState() == Tile.State.BLANK) {
+					//Is it a valid move for player
+					boolean ValidMove = board.isValidMove(i,j,player);
+					//boolean blackValidMove = board.isValidMove(i,j,Tile.State.BLACK);
+					
+					if (ValidMove) {
+						//Create the move for white and add to the set of moves.
+						Move possibleMove = new Move(i,j,player);
+						possibleMoves.add(possibleMove);
+					}
+//					if (blackValidMove) {
+//						//Create the move for black and add to the set of moves.
+//						Move possibleMove = new Move(i,j,Tile.State.BLACK);
+//						possibleMoves.add(possibleMove);
+//					}
+				}
+			}
+		}
+		
+		return possibleMoves;
+	}
 }
