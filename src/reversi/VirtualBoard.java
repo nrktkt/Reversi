@@ -122,11 +122,32 @@ public static final int SIZE = 8;
 			setTile(x,y,color);
 		}
 		
-		playerTiles.add(tiles[x][y]);
+		if (color != State.BLANK) {
+			playerTiles.add(tiles[x][y]);
+		}
 	}
 	
 	public Set<VirtualTile> getTileSet() {
 		return playerTiles;
+	}
+	
+	public boolean hasAdjacentBlanks(VirtualTile tile) {
+		int x = tile.getXCoord();
+		int y = tile.getYCoord();
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				return hasAdjacentBlank(x+i,y+j);
+			}
+		}
+		return false;
+	}
+	
+	private boolean hasAdjacentBlank(int x, int y) {
+		//Don't walk off the matrix
+		if (x > -1 && x < 8 && y > -1 && y < 8) {
+			return getTile(x,y).getState() == State.BLANK;
+		}
+		return false;
 	}
 	
 	public void setTile(int x, int y, State color){

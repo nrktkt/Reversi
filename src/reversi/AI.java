@@ -178,6 +178,22 @@ public class AI {
 	private static int getFrontier(VirtualBoard board){
 		int rating = 0;
 		
+		//Get all black and white tiles on the board
+		Set<VirtualTile> tiles = board.getTileSet();
+		for (VirtualTile tile : tiles) {
+			//Check to see if each tile has a blank tile adjacent to it
+			if (board.hasAdjacentBlanks(tile)) {
+				if (tile.getState() == Tile.State.WHITE) {
+					//Increment for white
+					rating++;
+				}
+				else if (tile.getState() == Tile.State.BLACK) {
+					//Decrement for black
+					rating--;
+				}
+			}
+		}
+		
 		return rating;
 	}
 	/**
