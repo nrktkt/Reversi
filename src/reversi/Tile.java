@@ -47,9 +47,19 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		setState(state);
 		setImage(state);
 		board.addTile(state);
-        addActionListener(this);      
+        addActionListener(this); 
+        
+        setHorizontalTextPosition(JButton.CENTER);
+        setVerticalTextPosition(JButton.CENTER);
+        
+		String column = getCharForNumber(y+1);
+        setText((x+1)+column);
 	}
 	
+	private String getCharForNumber(int i) {
+	    return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
+	}
+
 	public int getXCoord() {
 		return x;
 	}
