@@ -54,8 +54,13 @@ public class AI {
 		Set<Move> possibleMoves = getPossibleMoves(board, player);
 		//The temporary board used for visualizing possible move sequences
 		VirtualBoard temp;
+		//The alpha beta tree
+		Tree<Move> moveTree = new Tree<Move>(new Move(-1,-1,State.BLANK));
 
 		for (Move currentMove : possibleMoves) {
+			//Add each possible move to the tree
+			moveTree.addLeaf(currentMove);
+			Tree<Move> subTree = moveTree.getTree(currentMove);
 			// apply the current move
 			temp = new VirtualBoard(board);
 			if(temp.isValidMove(currentMove.getX(), currentMove.getY(), player)) {
@@ -66,7 +71,7 @@ public class AI {
 			if (player == State.WHITE) {
 				//Recursive call for alpha beta pruning 
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
+						VERY_LOW, Tile.getOppositeState(player),subTree));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
@@ -74,13 +79,18 @@ public class AI {
 			else {
 				//Recursive call for alpha beta pruning 
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
+						VERY_LOW, Tile.getOppositeState(player),subTree));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
 			}
 
 		}
+		
+		//Print out the tree of moves
+		System.out.println("Alpha Beta Tree:");
+		System.out.println(moveTree);
+		
 		return bestMove;
 	}
 	/**
@@ -89,7 +99,7 @@ public class AI {
 	 * @param player
 	 * @return the best move the given player can make on this board
 	 */
-	private static int getBestMove(VirtualBoard node, int depth, int a, int b, State maximizingPlayer) {
+	private static int getBestMove(VirtualBoard node, int depth, int a, int b, State maximizingPlayer, Tree<Move> moveTree) {
 		int an = a, bn = b;
 		if (depth == 0 || Game.isGameOver(node)) {
 			return rateBoard(node);
@@ -100,12 +110,14 @@ public class AI {
 		// white will always try to get the highest board score aka white is max
 		if (maximizingPlayer == State.WHITE) {
 			for (Move move : possibleMoves) {
+				moveTree.addLeaf(move);
+				Tree<Move> subTree = moveTree.getTree(move);
 				// apply the current move
 				temp = new VirtualBoard(node);
 				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
 				}
-				an = Math.max(a, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer)));
+				an = Math.max(a, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer),subTree));
 				if (bn <= an) {
 					break; // (* Beta cut-off *)
 				}
@@ -115,12 +127,14 @@ public class AI {
 		// black will always try to get the lowest board score aka black is min
 		else {
 			for (Move move : possibleMoves) {
+				moveTree.addLeaf(move);
+				Tree<Move> subTree = moveTree.getTree(move);
 				// apply the current move
 				temp = new VirtualBoard(node);
 				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
 				}
-				bn = Math.min(b, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer)));
+				bn = Math.min(b, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer),subTree));
 				if (bn <= an) {
 					break; // (* Alpha cut-off *)
 				}

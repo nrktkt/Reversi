@@ -55,8 +55,8 @@ public class Move implements Comparable {
 	 */
 	@Override
 	public String toString() {
-		return "Move [("+getCharForNumber(y+1)+","+(x+1)+") x=" + x + ", y=" + y + ", player=" + player + ", score="
-				+ score + ", forfeit=" + forfeit + "]";
+		return "Move [("+getCharForNumber(y+1)+","+(x+1)+") player=" + player + ", score="
+				+ score + "]";
 	}
 
 	/**

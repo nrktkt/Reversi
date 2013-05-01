@@ -132,7 +132,7 @@ public class Game {
 	}
 	public void makeMoveAI(){
 		Move best = AI.getBestMove(board, getCurrentPlayer());
-		System.out.println(best);
+		System.out.println("AI makes move: "+best);
 		tileClick(best.getX(), best.getY());
 	}
 	public void playerReady() {
