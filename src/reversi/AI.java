@@ -83,7 +83,7 @@ public class AI {
 		// TODO Auto-generated method stub
 		if (depth == 0 || Game.isGameOver(node)){
 			int rating = rateBoard(node);
-			System.err.println(rating);
+			System.err.println("leaf score: " +rating);
 			return rating;
 		}
 		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
@@ -99,7 +99,7 @@ public class AI {
 				
 				an = max(a, getBestMove(temp, depth - 1, an, bn,
 								Tile.getOppositeState(maximizingPlayer)));
-				if (bn <= an){
+				if (b <= an){
 					System.err.println("PRUNE!!");
 					break; // (* Beta cut-off *)
 				}
@@ -117,7 +117,7 @@ public class AI {
 				
 				bn = min(b, getBestMove(temp, depth - 1, an, bn,
 								Tile.getOppositeState(maximizingPlayer)));
-				if (bn <= an){
+				if (bn <= a){
 					System.err.println("PRUNE!!");
 				
 					break; // (* Alpha cut-off *)
