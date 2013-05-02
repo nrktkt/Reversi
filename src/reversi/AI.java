@@ -54,20 +54,22 @@ public class AI {
 				temp.flipTiles(currentMove.getX(), currentMove.getY(), player);
 			
 			if (player == State.WHITE) {
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, Tile.getOppositeState(player)));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore())
 					bestMove = currentMove;
 			} else {
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player)));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, Tile.getOppositeState(player)));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore())
 					bestMove = currentMove;
 			}
-
+			//System.err.println(currentMove);
 		}
+		
 		return bestMove;
 	}
+	
 	/**
 	 * 
 	 * @param board
@@ -76,10 +78,14 @@ public class AI {
 	 */
 	private static int getBestMove(VirtualBoard node, int depth, int a, int b,
 			State maximizingPlayer) {
+		
 		int an = a, bn = b;
 		// TODO Auto-generated method stub
-		if (depth == 0 || Game.isGameOver(node))
-			return rateBoard(node);
+		if (depth == 0 || Game.isGameOver(node)){
+			int rating = rateBoard(node);
+			System.err.println(rating);
+			return rating;
+		}
 		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
 		// possibleMoves = the moves maximizingPlayer can make
 		VirtualBoard temp;
@@ -96,6 +102,7 @@ public class AI {
 				if (bn <= an)
 					break; // (* Beta cut-off *)
 			}
+			visualizeAB(depth, an, bn, maximizingPlayer);
 			return an;
 		}
 		// black will always try to get the lowest board score aka black is min
@@ -111,19 +118,20 @@ public class AI {
 				if (bn <= an)
 					break; // (* Alpha cut-off *)
 			}
+			visualizeAB(depth, an, bn, maximizingPlayer);
 			return bn;
 		}
 	}
 	
 	private static int max(int h, int k){
 		if(h>k)
-			return k;
-		else return h;
+			return h;
+		else return k;
 	}
 	private static int min(int h, int k){
 		if(h<k)
-			return k;
-		else return h;
+			return h;
+		else return k;
 	}
 	
 	/**
@@ -289,5 +297,15 @@ int rating = 0;
 		}
 		
 		return possibleMoves;
+	}
+	private static void visualizeAB(int depth, int a, int b,
+			State maximizingPlayer){
+		String indent = "";
+		for(int i = 0; i <= depth; i++){
+			indent = indent + "    ";
+		}
+		System.out.println(indent + "a: " + a);
+		System.out.println(indent + "b: " + b);
+		System.out.println(indent + "player: " + maximizingPlayer);
 	}
 }

@@ -96,8 +96,8 @@ public class Game {
 	}
 	public void playerReady() {
 		
-		//giveAIAdvice();
-		playAIGame();
+		giveAIAdvice();
+		//playAIGame();
 		Object[] options = {"THANKS!!!"};
 		JOptionPane.showOptionDialog(new Frame(),
 			currentPlayerString()+": ARE YOU READY!?!??!!?!?",
