@@ -142,10 +142,10 @@ public class AI {
 	 */
 	private static int rateBoard(VirtualBoard board){
 		int rating = 0;
-		rating += getForfeit(board) * FORFEIT_WEIGHT;
-		rating += getMobility(board) * MOBILITY_WEIGHT;
-		rating += getFrontier(board) * FRONTIER_WEIGHT;
-		rating += getStability(board) * STABILITY_WEIGHT;
+		//rating += getForfeit(board) * FORFEIT_WEIGHT;
+		//rating += getMobility(board) * MOBILITY_WEIGHT;
+		//rating += getFrontier(board) * FRONTIER_WEIGHT;
+		//rating += getStability(board) * STABILITY_WEIGHT;
 		rating += getScore(board) * SCORE_WEIGHT;
 		return rating;
 	}
