@@ -99,8 +99,10 @@ public class AI {
 				
 				an = max(a, getBestMove(temp, depth - 1, an, bn,
 								Tile.getOppositeState(maximizingPlayer)));
-				if (bn <= an)
+				if (bn <= an){
+					System.err.println("PRUNE!!");
 					break; // (* Beta cut-off *)
+				}
 			}
 			visualizeAB(depth, an, bn, maximizingPlayer);
 			return an;
@@ -115,8 +117,11 @@ public class AI {
 				
 				bn = min(b, getBestMove(temp, depth - 1, an, bn,
 								Tile.getOppositeState(maximizingPlayer)));
-				if (bn <= an)
+				if (bn <= an){
+					System.err.println("PRUNE!!");
+				
 					break; // (* Alpha cut-off *)
+					}
 			}
 			visualizeAB(depth, an, bn, maximizingPlayer);
 			return bn;
