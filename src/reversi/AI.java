@@ -71,7 +71,7 @@ public class AI {
 			if (player == State.WHITE) {
 				//Recursive call for alpha beta pruning 
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
-						VERY_HIGH, Tile.getOppositeState(player),subTree));// or is it opposite player?
+						VERY_HIGH, Tile.getOppositeState(player)));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
@@ -79,7 +79,7 @@ public class AI {
 			else {
 				//Recursive call for alpha beta pruning 
 				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
-						VERY_HIGH, Tile.getOppositeState(player),subTree));// or is it opposite player?
+						VERY_HIGH, Tile.getOppositeState(player)));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
@@ -88,61 +88,105 @@ public class AI {
 		}
 		
 		//Print out the tree of moves
-		System.out.println("Alpha Beta Tree:");
-		System.out.println(moveTree);
+		//System.out.println("Alpha Beta Tree:");
+		//System.out.println(moveTree);
 		
 		return bestMove;
 	}
+//	/**
+//	 * 
+//	 * @param board
+//	 * @param player
+//	 * @return the best move the given player can make on this board
+//	 */
+//	private static int getBestMove(VirtualBoard node, int depth, int a, int b, State maximizingPlayer, Tree<Move> moveTree) {
+//		int an = a, bn = b;
+//		if (depth == 0 || Game.isGameOver(node)) {
+//			int rating = rateBoard(node);
+//			System.err.println(rating);
+//			return rating;
+//		}
+//		
+//		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
+//		VirtualBoard temp;
+//		// white will always try to get the highest board score aka white is max
+//		if (maximizingPlayer == State.WHITE) {
+//			for (Move move : possibleMoves) {
+//				moveTree.addLeaf(move);
+//				Tree<Move> subTree = moveTree.getTree(move);
+//				// apply the current move
+//				temp = new VirtualBoard(node);
+//				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
+//					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
+//				}
+//				an = Math.max(a, getBestMove(temp, depth - 1, a, b, Tile.getOppositeState(maximizingPlayer),subTree));
+//				if (bn <= an) {
+//					break; // (* Beta cut-off *)
+//				}
+//			}
+//			visualizeAB(depth, an, bn, maximizingPlayer);
+//			return an;
+//		}
+//		// black will always try to get the lowest board score aka black is min
+//		else {
+//			for (Move move : possibleMoves) {
+//				moveTree.addLeaf(move);
+//				Tree<Move> subTree = moveTree.getTree(move);
+//				// apply the current move
+//				temp = new VirtualBoard(node);
+//				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
+//					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
+//				}
+//				bn = Math.min(b, getBestMove(temp, depth - 1, a, b, Tile.getOppositeState(maximizingPlayer),subTree));
+//				if (bn <= an) {
+//					break; // (* Alpha cut-off *)
+//				}
+//			}
+//			visualizeAB(depth, an, bn, maximizingPlayer);
+//			return bn;
+//		}
+//	}
 	/**
 	 * 
 	 * @param board
 	 * @param player
 	 * @return the best move the given player can make on this board
 	 */
-	private static int getBestMove(VirtualBoard node, int depth, int a, int b, State maximizingPlayer, Tree<Move> moveTree) {
+	private static int getBestMove(VirtualBoard node, int depth, int a, int b, State maximizingPlayer) {
 		int an = a, bn = b;
 		if (depth == 0 || Game.isGameOver(node)) {
-			return rateBoard(node);
+			int rating = rateBoard(node);
+			System.err.println(rating);
+			return rating;
 		}
 		
 		Set<Move> possibleMoves = getPossibleMoves(node, maximizingPlayer);
 		VirtualBoard temp;
-		// white will always try to get the highest board score aka white is max
-		if (maximizingPlayer == State.WHITE) {
-			for (Move move : possibleMoves) {
-				moveTree.addLeaf(move);
-				Tree<Move> subTree = moveTree.getTree(move);
-				// apply the current move
-				temp = new VirtualBoard(node);
-				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
-					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
-				}
-				an = Math.max(a, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer),subTree));
+		for (Move move : possibleMoves) {
+			temp = new VirtualBoard(node);
+			if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
+				temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
+			}
+			
+			if (maximizingPlayer == State.WHITE) {
+				an = Math.max(a, getBestMove(temp, depth - 1, a, b, Tile.getOppositeState(maximizingPlayer)));
 				if (bn <= an) {
 					break; // (* Beta cut-off *)
 				}
-			}
-			return an;
-		}
-		// black will always try to get the lowest board score aka black is min
-		else {
-			for (Move move : possibleMoves) {
-				moveTree.addLeaf(move);
-				Tree<Move> subTree = moveTree.getTree(move);
-				// apply the current move
-				temp = new VirtualBoard(node);
-				if(temp.isValidMove(move.getX(), move.getY(), maximizingPlayer)) {
-					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
-				}
-				bn = Math.min(b, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer),subTree));
+			}else{
+				bn = Math.min(b, getBestMove(temp, depth - 1, a, b, Tile.getOppositeState(maximizingPlayer)));
 				if (bn <= an) {
 					break; // (* Alpha cut-off *)
 				}
 			}
-			return bn;
+			
 		}
+		visualizeAB(depth, an, bn, maximizingPlayer);
+		if (maximizingPlayer == State.WHITE) 
+			return an;
+		else
+			return bn;
 	}
-		
 	/**
 	 *
 	 * @param board
@@ -151,10 +195,10 @@ public class AI {
 	 */
 	private static int rateBoard(VirtualBoard board){
 		int rating = 0;
-		rating += getForfeit(board) * FORFEIT_WEIGHT;
-		rating += getMobility(board) * MOBILITY_WEIGHT;
-		rating += getFrontier(board) * FRONTIER_WEIGHT;
-		rating += getStability(board) * STABILITY_WEIGHT;
+		//rating += getForfeit(board) * FORFEIT_WEIGHT;
+		//rating += getMobility(board) * MOBILITY_WEIGHT;
+		//rating += getFrontier(board) * FRONTIER_WEIGHT;
+		//rating += getStability(board) * STABILITY_WEIGHT;
 		rating += getScore(board) * SCORE_WEIGHT;
 		return rating;
 	}
@@ -286,5 +330,15 @@ public class AI {
 		}
 		
 		return possibleMoves;
+	}
+	private static void visualizeAB(int depth, int a, int b,
+			State maximizingPlayer){
+		String indent = "";
+		for(int i = 0; i <= depth; i++){
+			indent = indent + "    ";
+		}
+		System.out.println(indent + "a: " + a);
+		System.out.println(indent + "b: " + b);
+		System.out.println(indent + "player: " + maximizingPlayer);
 	}
 }
