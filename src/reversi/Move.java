@@ -10,6 +10,8 @@ import reversi.Tile.State;
  * 
  */
 public class Move implements Comparable {
+	
+
 	private int x, y;
 	private State player;
 	private int score; // how good the move is for the player
@@ -27,7 +29,14 @@ public class Move implements Comparable {
 		this.player = player;
 		this.score = score;
 	}
-
+/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Move [x=" + x + ", y=" + y + ", player=" + player + ", score="
+				+ score + "]";
+	}
 	/**
 	 * @return the score
 	 */

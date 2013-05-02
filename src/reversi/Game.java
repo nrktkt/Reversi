@@ -86,8 +86,18 @@ public class Game {
 			return "Player 2 ("+playerTwo+")";
 		}
 	}
-	
+	public void giveAIAdvice(){
+		System.out.println(AI.getBestMove(board, getCurrentPlayer()));
+	}
+	public void playAIGame(){
+		Move best = AI.getBestMove(board, getCurrentPlayer());
+		System.out.println(best);
+		tileClick(best.getX(), best.getY());
+	}
 	public void playerReady() {
+		
+		//giveAIAdvice();
+		playAIGame();
 		Object[] options = {"THANKS!!!"};
 		JOptionPane.showOptionDialog(new Frame(),
 			currentPlayerString()+": ARE YOU READY!?!??!!?!?",
@@ -175,6 +185,15 @@ public class Game {
 	}
 	
 	public static boolean isGameOver(Board board) {
+		if (!board.hasBlankTiles()) {
+			return true;
+		}
+		if (board.getBlackTiles() == 0 || board.getWhiteTiles() == 0) {
+			return true;
+		}
+		return false;
+	}
+	public static boolean isGameOver(VirtualBoard board) {
 		if (!board.hasBlankTiles()) {
 			return true;
 		}
