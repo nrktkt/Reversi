@@ -70,16 +70,16 @@ public class AI {
 			//finds the best move for player white or player black
 			if (player == State.WHITE) {
 				//Recursive call for alpha beta pruning 
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player),subTree));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, Tile.getOppositeState(player),subTree));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
 			} 
 			else {
 				//Recursive call for alpha beta pruning 
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player),subTree));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, Tile.getOppositeState(player),subTree));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
