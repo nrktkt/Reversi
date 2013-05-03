@@ -3,10 +3,7 @@
  */
 package reversi;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import reversi.Tile.State;
@@ -24,12 +21,6 @@ public class AI {
 	private static final int MAX_DEPTH = 5;
 	private static final int VERY_LOW = Integer.MIN_VALUE+200;
 	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
-	
-	private Board gameBoard;
-	
-	public AI(Board gameBoard) {
-		this.gameBoard = gameBoard;
-	}
 
 	/**
 	 * 
@@ -40,9 +31,7 @@ public class AI {
 	public static Move getBestMove(Board board, Tile.State player){
 		//Initialize the best move to zero
 		Move bestMove;
-		// idea: player should forefeit his turn if he cannot make a move that returns a board better than the one he is already in
-//		bestMove = new Move(0, 0, player, rateBoard(new VirtualBoard(board)));
-//		bestMove.setForfeit(true);
+
 		if(player == State.WHITE) {
 			bestMove = new Move(0, 0, player, VERY_LOW);
 		}
@@ -152,9 +141,12 @@ public class AI {
 	 * 		while a very negative number means the board is favorable for black
 	 */
 	private static int rateBoard(VirtualBoard board){
+		Set<Move> blackMoves = getPossibleMoves(board, State.WHITE);
+		Set<Move> whiteMoves = getPossibleMoves(board, State.BLACK);
+		
 		int rating = 0;
-		rating += getForfeit(board) * FORFEIT_WEIGHT;
-		rating += getMobility(board) * MOBILITY_WEIGHT;
+		rating += getForfeit(blackMoves, whiteMoves) * FORFEIT_WEIGHT;
+		rating += getMobility(blackMoves, whiteMoves) * MOBILITY_WEIGHT;
 		rating += getFrontier(board) * FRONTIER_WEIGHT;
 		rating += getStability(board) * STABILITY_WEIGHT;
 		rating += getScore(board) * SCORE_WEIGHT;
@@ -166,14 +158,16 @@ public class AI {
 	 * @param board
 	 * @return -1 if white would forfeit a turn on this board, 1 if black would forfeit, else 0
 	 */
-	private static int getForfeit(VirtualBoard board){
+	private static int getForfeit(Set<Move> blackMoves, Set<Move> whiteMoves){
 		int rating = 0;
 		//case where players have no moves
-		if(getPossibleMoves(board, State.WHITE).isEmpty())
+		if(blackMoves.isEmpty()) {
 			rating --;
-		if(getPossibleMoves(board, State.BLACK).isEmpty())
+		}
+		if(whiteMoves.isEmpty()) {
 			rating ++;
-		//case where players choose to skip turn
+		}
+
 		return rating;
 	}
 	
@@ -182,8 +176,8 @@ public class AI {
 	 * @param board
 	 * @return number of moves white can make - num moves black can make
 	 */
-	private static int getMobility(VirtualBoard board){
-		return getPossibleMoves(board, State.WHITE).size() - getPossibleMoves(board, State.BLACK).size();
+	private static int getMobility(Set<Move> blackMoves, Set<Move> whiteMoves){
+		return whiteMoves.size() - blackMoves.size();
 	}
 	
 	/**
