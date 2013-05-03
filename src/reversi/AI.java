@@ -70,16 +70,16 @@ public class AI {
 			//finds the best move for player white or player black
 			if (player == State.WHITE) {
 				//Recursive call for alpha beta pruning 
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player),subTree));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, Tile.getOppositeState(player),subTree));// or is it opposite player?
 				if (currentMove.getScore() >= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
 			} 
 			else {
 				//Recursive call for alpha beta pruning 
-				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_HIGH,
-						VERY_LOW, Tile.getOppositeState(player),subTree));// or is it opposite player?
+				currentMove.setScore(getBestMove(temp, MAX_DEPTH, VERY_LOW,
+						VERY_HIGH, Tile.getOppositeState(player),subTree));// or is it opposite player?
 				if (currentMove.getScore() <= bestMove.getScore()) {
 					bestMove = currentMove;
 				}
@@ -118,6 +118,7 @@ public class AI {
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
 				}
 				an = Math.max(a, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer),subTree));
+				move.setScore(an);
 				if (bn <= an) {
 					break; // (* Beta cut-off *)
 				}
@@ -135,6 +136,7 @@ public class AI {
 					temp.flipTiles(move.getX(), move.getY(), maximizingPlayer);
 				}
 				bn = Math.min(b, getBestMove(temp, depth - 1, an, bn, Tile.getOppositeState(maximizingPlayer),subTree));
+				move.setScore(bn);
 				if (bn <= an) {
 					break; // (* Alpha cut-off *)
 				}

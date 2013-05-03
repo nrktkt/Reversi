@@ -53,7 +53,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
         setVerticalTextPosition(JButton.CENTER);
         
 		String column = getCharForNumber(y+1);
-        setText((x+1)+column);
+        setText(column+(x+1));
 	}
 	
 	private String getCharForNumber(int i) {
