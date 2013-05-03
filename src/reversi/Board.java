@@ -74,7 +74,7 @@ public class Board extends JFrame {
 		placeTile(middle - 1,middle, Tile.State.BLACK);
 		placeTile(middle,middle, Tile.State.WHITE);
 		placeTile(middle,middle - 1, Tile.State.BLACK);
-		
+				
 		clearCCR();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

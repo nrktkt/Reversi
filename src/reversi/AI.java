@@ -13,11 +13,12 @@ import reversi.Tile.State;
  *
  */
 public class AI {
-	private static final double FORFEIT_WEIGHT = 1;
-	private static final double MOBILITY_WEIGHT = 1;
-	private static final double FRONTIER_WEIGHT = 1;
-	private static final double STABILITY_WEIGHT = 1;
-	private static final double SCORE_WEIGHT = 1;
+	private static final double FORFEIT_WEIGHT = 8;
+	private static final double MOBILITY_WEIGHT = 2;
+	private static final double FRONTIER_WEIGHT = 2;
+	private static final double STABILITY_WEIGHT = 5;
+	private static final double SCORE_WEIGHT = 5;
+	
 	private static final int MAX_DEPTH = 5;
 	private static final int VERY_LOW = Integer.MIN_VALUE+200;
 	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
@@ -148,7 +149,7 @@ public class AI {
 		rating += getForfeit(blackMoves, whiteMoves) * FORFEIT_WEIGHT;
 		rating += getMobility(blackMoves, whiteMoves) * MOBILITY_WEIGHT;
 		rating += getFrontier(board) * FRONTIER_WEIGHT;
-		rating += getStability(board) * STABILITY_WEIGHT;
+		rating += getStability(board, blackMoves, whiteMoves) * STABILITY_WEIGHT;
 		rating += getScore(board) * SCORE_WEIGHT;
 		return rating;
 	}
@@ -211,8 +212,10 @@ public class AI {
 	 * @param board
 	 * @return
 	 */
-	private static int getStability(VirtualBoard board){
+	private static int getStability(VirtualBoard board, Set<Move> blackMoves, Set<Move> whiteMoves){
 		int rating = 0;
+		
+		
 		
 		return rating;
 	}
@@ -240,8 +243,8 @@ public class AI {
 		Set<Move> possibleMoves = new HashSet<Move>();
 		
 		//Check each tile on the board.
-		for (int i = 0; i < board.SIZE; i++) {
-			for (int j = 0; j < board.SIZE; j++) {
+		for (int i = 0; i < VirtualBoard.SIZE; i++) {
+			for (int j = 0; j < VirtualBoard.SIZE; j++) {
 				//Look at only blank tiles.
 				if (board.getTile(i, j).getState() == Tile.State.BLANK) {
 					//Is it a valid move for player
@@ -264,8 +267,8 @@ public class AI {
 		Set<Move> possibleMoves = new HashSet<Move>();
 		
 		//Check each tile on the board.
-		for (int i = 0; i < board.SIZE; i++) {
-			for (int j = 0; j < board.SIZE; j++) {
+		for (int i = 0; i < VirtualBoard.SIZE; i++) {
+			for (int j = 0; j < VirtualBoard.SIZE; j++) {
 				//Look at only blank tiles.
 				if (board.getTile(i, j).getState() == Tile.State.BLANK) {
 					//Is it a valid move for player
