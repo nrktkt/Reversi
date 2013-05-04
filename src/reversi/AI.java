@@ -215,7 +215,7 @@ public class AI {
 	private static int getStability(VirtualBoard board, Set<Move> blackMoves, Set<Move> whiteMoves){
 		int rating = 0;
 		
-		
+		//In development
 		
 		return rating;
 	}
