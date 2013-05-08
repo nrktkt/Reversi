@@ -142,8 +142,8 @@ public class AI {
 	 * 		while a very negative number means the board is favorable for black
 	 */
 	private static int rateBoard(VirtualBoard board){
-		Set<Move> blackMoves = getPossibleMoves(board, State.WHITE);
-		Set<Move> whiteMoves = getPossibleMoves(board, State.BLACK);
+		Set<Move> blackMoves = getPossibleMoves(board, State.BLACK);
+		Set<Move> whiteMoves = getPossibleMoves(board, State.WHITE);
 		
 		int rating = 0;
 		rating += getForfeit(blackMoves, whiteMoves) * FORFEIT_WEIGHT;
