@@ -1,6 +1,3 @@
-/**
- * 
- */
 package reversi;
 
 import java.util.HashSet;
@@ -9,14 +6,21 @@ import java.util.Set;
 import reversi.Tile.State;
 
 /**
- * @author kAG0
+ * The AI class is responsible for finding the next optimal 
+ * move given a current board state and a player. This class uses
+ * alpha beta pruning to recursively call getBestMove() where certain 
+ * subtrees are pruned from the search space. This class has a search depth of 5.
+ * Scores are determined by the current score of player white and player black.
+ * Scores are also influenced by the number of possible next move options
+ * and the number of moves that black has versus the number of moves that white
+ * has. Lastly, if a given move causes the other player to forfeit, the score
+ * is incremented again.
  *
  */
 public class AI {
 	private static final double FORFEIT_WEIGHT = 8;
 	private static final double MOBILITY_WEIGHT = 2;
 	private static final double FRONTIER_WEIGHT = 2;
-	private static final double STABILITY_WEIGHT = 5;
 	private static final double SCORE_WEIGHT = 5;
 	
 	private static final int MAX_DEPTH = 5;
@@ -149,7 +153,6 @@ public class AI {
 		rating += getForfeit(blackMoves, whiteMoves) * FORFEIT_WEIGHT;
 		rating += getMobility(blackMoves, whiteMoves) * MOBILITY_WEIGHT;
 		rating += getFrontier(board) * FRONTIER_WEIGHT;
-		rating += getStability(board, blackMoves, whiteMoves) * STABILITY_WEIGHT;
 		rating += getScore(board) * SCORE_WEIGHT;
 		return rating;
 	}
@@ -204,18 +207,6 @@ public class AI {
 				}
 			}
 		}
-		
-		return rating;
-	}
-	/**
-	 * rating based on how many disks are unflippable
-	 * @param board
-	 * @return
-	 */
-	private static int getStability(VirtualBoard board, Set<Move> blackMoves, Set<Move> whiteMoves){
-		int rating = 0;
-		
-		//In development
 		
 		return rating;
 	}

@@ -6,6 +6,13 @@ import javax.swing.JOptionPane;
 
 import reversi.Tile.State;
 
+/**
+ * A Game object is the start and central hub of the 
+ * Reversi game. All GUI interaction is done through this Game
+ * object. The Game object is responsible for creating a Board and 
+ * a ScoreBoard. 
+ *
+ */
 public class Game {
 	//Two types of intelligence
 	public enum Intelligence {

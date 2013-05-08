@@ -7,6 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+/**
+ * Tile is what it sounds like. It consists of a state,
+ * a coordinate pair, and belongs to a board.
+ *
+ */
 public class Tile extends JButton implements ActionListener, TileForm{
 	//The state of a tile can be blank, white, or blank.
 	public enum State {

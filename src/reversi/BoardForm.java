@@ -28,12 +28,6 @@ public interface BoardForm {
 	
 	public boolean hasBlankTiles();
 	
-	/**
-	 * 
-	 * @param x x position of tile to return
-	 * @param y y position of tile to return
-	 * @return
-	 */
 	public TileForm getTile(int x, int y);
 	
 	public void placeTile(int x, int y, State color);
@@ -44,11 +38,6 @@ public interface BoardForm {
 	
 	public void debugPrint();	
 
-	/**
-	 * flips a tile at the given location
-	 * @param x x position of tile to flip
-	 * @param y y position of tile to flip
-	 */
 	public void flipTile(int x, int y);
 	
 	public TileForm[][] getTiles();

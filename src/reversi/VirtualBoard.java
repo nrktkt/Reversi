@@ -4,6 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 import reversi.Tile.State;
 
+/**
+ * Most methods and variables will be identical to that of 
+ * the Board class. Comments will be left to a minimum since the
+ * two classes are nearly the same. The main difference is that this
+ * VirtualBoard does not inherit UI Element qualities, keeping 
+ * the alpha beta pruning a little more efficient.
+ *
+ */
 public class VirtualBoard{// implements BoardForm{
 public static final int SIZE = 8;
 	
