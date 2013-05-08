@@ -18,14 +18,16 @@ import reversi.Tile.State;
  *
  */
 public class AI {
-	private static final double FORFEIT_WEIGHT = 8;
+	private static final int VERY_LOW = Integer.MIN_VALUE+200;
+	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
+	
+	private static final double FORFEIT_WEIGHT = VERY_HIGH;
 	private static final double MOBILITY_WEIGHT = 2;
 	private static final double FRONTIER_WEIGHT = 2;
 	private static final double SCORE_WEIGHT = 5;
 	
 	private static final int MAX_DEPTH = 5;
-	private static final int VERY_LOW = Integer.MIN_VALUE+200;
-	private static final int VERY_HIGH = Integer.MAX_VALUE-200;
+	
 
 	/**
 	 * 
