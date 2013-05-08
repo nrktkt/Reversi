@@ -1,8 +1,14 @@
 package reversi;
 import reversi.Tile.State;
 
+/**
+ * A Move consists of the player that made that move
+ * and a coordinate pair. Optionally, a Move may include
+ * a score. Forfeit is set to true when a move causes the 
+ * opposing player to forfeit their move.
+ *
+ */
 public class Move implements Comparable {
-	
 
 	private int x, y;
 	private State player;

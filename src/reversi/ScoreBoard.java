@@ -8,6 +8,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+/**
+ * This ScoreBoard is simply a UI elements to keep track
+ * of current moves and the scores of the game.
+ *
+ */
 public class ScoreBoard extends JFrame implements ActionListener {
 
 	private Game game;

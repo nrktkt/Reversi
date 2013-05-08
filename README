@@ -1,2 +1,10 @@
 Reversi - AI Final Project
+*******************************
 Patrick Mosca & Nathaniel Fisher
+
+The following project can be found at: https://github.com/kag0/Reversi
+
+To run the game, compile in Java or preferably from within Eclipse.
+1) Open the Eclipse project
+2) Open Game.java
+3) Click Build and Run
