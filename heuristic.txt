@@ -1,0 +1,27 @@
+	/**
+	 *
+	 * @param board
+	 * @return a very positive number means the board is favorable for white
+	 * 		while a very negative number means the board is favorable for black
+	 */
+	int rateBoard(board){
+		blackMoves = getPossibleMoves(board, BLACK);
+		whiteMoves = getPossibleMoves(board, WHITE);
+		
+		rating = 0;
+		//rate based on if a player would forfeit
+		rating += getForfeit(blackMoves, whiteMoves) * FORFEIT_WEIGHT;
+		
+		//rate based on how many moves players can make
+		rating += getMobility(blackMoves, whiteMoves) * MOBILITY_WEIGHT;
+		
+		//rate based on how many disks have open spots adjacent to them
+		rating += getFrontier(board) * FRONTIER_WEIGHT;
+		
+		//rate based on number of unflippable pieces
+		rating += getStability(board, blackMoves, whiteMoves) * STABILITY_WEIGHT;
+		
+		//rate based on game score
+		rating += getScore(board) * SCORE_WEIGHT;
+		return rating;
+	}
