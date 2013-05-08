@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import reversi.Tile.State;
 
 public class Game {
+	//Two types of intelligence
 	public enum Intelligence {
 		HUMAN, AI;
 	}
@@ -16,8 +17,8 @@ public class Game {
 	private Tile.State playerOne, playerTwo;
 	private Intelligence playerOneIntelligence, playerTwoIntelligence;
 	private ScoreBoard scoreBoard;
-	//ccr code [l,r,u,d,ul,ur,dl,dr]
 	
+	//Start of the program creates a new game
 	public static void main(String[] args) {
 		new Game();
 	}
@@ -34,6 +35,7 @@ public class Game {
 		playerReady();
 	}
 	
+	//Gets player one's score
 	public int getPlayerOneScore() {
 		if (playerOne == State.BLACK) {
 			return board.getBlackTiles();
@@ -43,6 +45,7 @@ public class Game {
 		}
 	}
 	
+	//Gets player two's score
 	public int getPlayerTwoScore() {
 		if (playerOne != State.BLACK) {
 			return board.getBlackTiles();
@@ -52,8 +55,8 @@ public class Game {
 		}
 	}
 	
+	//Asks the player if he would like to be black or white
 	public void blackOrWhite() {
-		//Custom button text
 		Object[] options = {"White",
 		                    "Black"};
 		int n = JOptionPane.showOptionDialog(new Frame(),
@@ -74,8 +77,8 @@ public class Game {
 		}
 	}
 	
+	//Asks the player if he would like to be human or AI
 	public void humanOrAI() {
-		//Custom button text
 		Object[] options = {"Human",
 		                    "AI"};
 		int n = JOptionPane.showOptionDialog(new Frame(),
@@ -110,6 +113,7 @@ public class Game {
 		}
 	}
 	
+	//Gets the state/color of a given player
 	public State getCurrentPlayer() {
 		if (playerOneTurn) {
 			return playerOne;
@@ -119,6 +123,7 @@ public class Game {
 		}
 	}
 
+	//A pretty string of player1 or player2
 	public String currentPlayerString() {
 		if (playerOneTurn) {
 			return "Player 1 ("+playerOne+")";
@@ -127,18 +132,24 @@ public class Game {
 			return "Player 2 ("+playerTwo+")";
 		}
 	}
+	
+	//Prints AI advice to the console
 	public void giveAIAdvice(){
 		System.out.println(AI.getBestMove(board, getCurrentPlayer()));
 	}
+	
+	//Gets the optimal move from AI and then makes that move
 	public void makeMoveAI(){
 		Move best = AI.getBestMove(board, getCurrentPlayer());
 		System.out.println("AI makes move: "+best);
 		tileClick(best.getX(), best.getY());
 	}
+	
+	//Confirms that the player is ready
 	public void playerReady() {
-		Object[] options = {"THANKS!!!"};
+		Object[] options = {"OK"};
 		JOptionPane.showOptionDialog(new Frame(),
-			currentPlayerString()+": ARE YOU READY!?!??!!?!?",
+			currentPlayerString()+": ARE YOU READY!?",
 		    "Your Turn",
 		    JOptionPane.YES_NO_CANCEL_OPTION,
 		    JOptionPane.QUESTION_MESSAGE,
@@ -153,9 +164,10 @@ public class Game {
 		}
 	}
 	
+	//Asks if the player is certain about his move
 	public boolean playerConfirmation() {
-		Object[] options = {"Not really...",
-		                    "YES!!!"};
+		Object[] options = {"Not really.",
+		                    "Yes!"};
 		int n = JOptionPane.showOptionDialog(new Frame(),
 			currentPlayerString()+": ARE YOU POSITIVE????",
 		    "Ready?",
@@ -170,6 +182,7 @@ public class Game {
 		return false;
 	}
 	
+	//Presents a popup dialog when the game is over
 	public void gameOver() {
 		String winner;
 		int blacks = board.getBlackTiles();
@@ -196,6 +209,7 @@ public class Game {
 		System.exit(1);
 	}
 	
+	//Gets a players confirmation before making a valid move
 	public void tileClick(int x, int y) {
 		if (playerConfirmation()) {
 			boolean validMove = makeMove(x, y);
@@ -205,12 +219,14 @@ public class Game {
 				gameOver();
 			}
 			
+			//Make sure this is a valid move
 			if (validMove) {
 				switchTurns();
 			}
 		}
 	}
 
+	//Skips a player's turn
 	public void skipTurn() {
 		if (playerConfirmation()) {
 			board.unHighLightTiles();
@@ -218,6 +234,7 @@ public class Game {
 		}
 	}
 	
+	//Determines if the game is finished.
 	public boolean isGameOver() {
 		if (!board.hasBlankTiles()) {
 			return true;
@@ -228,6 +245,7 @@ public class Game {
 		return false;
 	}
 	
+	//Determines if a given board is full.
 	public static boolean isGameOver(Board board) {
 		if (!board.hasBlankTiles()) {
 			return true;
@@ -237,6 +255,8 @@ public class Game {
 		}
 		return false;
 	}
+	
+	//Determines if a given virtual board is full.
 	public static boolean isGameOver(VirtualBoard board) {
 		if (!board.hasBlankTiles()) {
 			return true;
@@ -247,11 +267,14 @@ public class Game {
 		return false;
 	}
 	
+	//Alternatives between players
 	public void switchTurns() {
 		playerOneTurn = !playerOneTurn;
 		playerReady();
 	}
 
+	//Makes a move, highlighting tiles along the way.
+	//Tiles are flipped and the score is set.
 	public boolean makeMove(int x, int y){
 		State player = getCurrentPlayer();
 		if (!board.isValidMove(x,y,player)) {

@@ -1,7 +1,6 @@
 package reversi;
 
 import java.util.Set;
-
 import reversi.Tile.State;
 
 public interface BoardForm {
@@ -61,7 +60,6 @@ public interface BoardForm {
 	public boolean moveFromDown(int x, int y, State col);
 	public boolean moveFromDownRight(int x, int y, State col);
 	public boolean moveFromDownLeft(int x, int y, State col);
-	//need to change null checks to checks for blank state
 	public boolean isValidMove(int x, int y, State player);
 	public void flipTiles(int x, int y, Tile.State player);
 }

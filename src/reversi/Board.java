@@ -81,7 +81,9 @@ public class Board extends JFrame {
 		setVisible(true);
 	}
 		
+	//Adds a black white or blank tile to the board
 	public void addTile(State tile) {
+		//Increment tile counts
 		switch (tile) {
 			case BLACK:
 				blackTiles++;
@@ -95,7 +97,9 @@ public class Board extends JFrame {
 			}
 	}
 	
+	//Removes a tile from the board
 	public void removeTile(State tile) {
+		//Decrement tile counts
 		switch (tile) {
 			case BLACK:
 				blackTiles--;
@@ -109,22 +113,27 @@ public class Board extends JFrame {
 			}
 	}
 	
+	//Number of black tiles
 	public int getBlackTiles() {
 		return blackTiles;
 	}
 	
+	//Number of white tiles
 	public int getWhiteTiles() {
 		return whiteTiles;
 	}
 	
+	//Number of blank tiles
 	public int getBlankTiles() {
 		return blankTiles;
 	}
 	
+	//Simulates a click on tile [x,y]
 	public void tileClick(int x, int y) {
 		game.tileClick(x, y);
 	}
 
+	//Removes the highlights on all tiles
 	public void unHighLightTiles() {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
@@ -133,6 +142,7 @@ public class Board extends JFrame {
 		}
 	}
 	
+	//True blank tiles exist on the board
 	public boolean hasBlankTiles() {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
@@ -154,6 +164,7 @@ public class Board extends JFrame {
 		return tiles[x][y];
 	}
 	
+	//Forces a tile with a given color onto [x,y]
 	public void placeTile(int x, int y, State color) {
 		if (tiles[x][y].getState() == State.BLANK) {
 			setTile(x,y,color);
@@ -162,14 +173,17 @@ public class Board extends JFrame {
 		playerTiles.add(tiles[x][y]);
 	}
 	
+	//The set of all tiles on the board
 	public Set<Tile> getTileSet() {
 		return playerTiles;
 	}
 	
+	//Sets the state of a tile at position [x,y]
 	public void setTile(int x, int y, State color){
 		tiles[x][y].setState(color);
 	}
 	
+	//Prints the board on the terminal
 	public void debugPrint(){
 		for (int x = 0; x < 8; x++) {
 		    for (int y = 0; y < 8; y++) {
@@ -184,7 +198,6 @@ public class Board extends JFrame {
 		}
 	}
 	
-
 	/**
 	 * flips a tile at the given location
 	 * @param x x position of tile to flip
@@ -194,17 +207,22 @@ public class Board extends JFrame {
 		tiles[x][y].flip();
 	}
 	
+	//Returns an array of all tiles
 	public Tile[][] getTiles() {
 		return tiles;
 	}
 	
-	
+	//Resets the CCR array
 	private void clearCCR(){
 		for(int i = 0; i < Board.SIZE; i++){
 			CCR[i] = false;
 		}
 	}
 
+	
+	//The following functions are used to determine if a tile
+	//can be placed at a given coordinate [x,y] by checking all
+	//tiles horizontally, vertically, and diagonally.
 	private boolean moveFromLeft(int x, int y, State col){
 		if(x-1 >= 0){
 			if(getTile(x-1, y).isBlank())
@@ -348,7 +366,8 @@ public class Board extends JFrame {
 		}
 		return false;
 	}
-	//need to change null checks to checks for blank state
+	
+	//Determines if a tile of a given color can be placed at [x,y]
 	public boolean isValidMove(int x, int y, State player){
 		clearCCR();
 		boolean u = false;
@@ -411,6 +430,7 @@ public class Board extends JFrame {
 		
 	}
 	
+	//Flips all enemy tiles that surround the position [x,y]
 	public void flipTiles(int x, int y, Tile.State player) {
 		if(CCR[LEFT]){
 			flipLeft(x, y, player);
@@ -439,6 +459,7 @@ public class Board extends JFrame {
 	}
 	
 	/**
+	 * The following functions flips tiles horizontally, vertically, and diagonally.
 	 * @pre the x,y must have a tile in it
 	 * @param x 
 	 * @param y
