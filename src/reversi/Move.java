@@ -1,22 +1,15 @@
-/**
- * 
- */
 package reversi;
-
 import reversi.Tile.State;
 
-/**
- * @author kAG0
- * 
- */
 public class Move implements Comparable {
 	
 
 	private int x, y;
 	private State player;
 	private int score; // how good the move is for the player
-	private boolean forfeit;
+	private boolean forfeit; // does this move create a forfeit
 
+	//Creates a move for a given player at [x,y]
 	public Move(int x, int y, State player) {
 		this.x = x;
 		this.y = y;
@@ -25,6 +18,7 @@ public class Move implements Comparable {
 		forfeit = false;
 	}
 
+	//Creates a move for a given player at [x,y] with a score
 	public Move(int x, int y, State player, int score) {
 		this.x = x;
 		this.y = y;
@@ -50,9 +44,7 @@ public class Move implements Comparable {
 	    return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+	//Pretty prints the move
 	@Override
 	public String toString() {
 		return "Move [("+getCharForNumber(y+1)+","+(x+1)+") player=" + player + ", score="
@@ -134,11 +126,7 @@ public class Move implements Comparable {
 		return score - other.getScore();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
+	//Compares against another Move object
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

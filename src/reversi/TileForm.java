@@ -1,8 +1,8 @@
 package reversi;
 import reversi.Tile.State;
 
+//Interface that Tile and VirtualTile conform to.
 public interface TileForm {
-
 	
 	public int getXCoord();
 	
@@ -17,5 +17,4 @@ public interface TileForm {
 	public void setState(State state);
 
 	public State getState();
-
 }

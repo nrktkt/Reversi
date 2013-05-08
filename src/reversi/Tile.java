@@ -3,17 +3,12 @@ package reversi;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-/**
- * 
- * @author kAG0
- *
- */
 public class Tile extends JButton implements ActionListener, TileForm{
+	//The state of a tile can be blank, white, or blank.
 	public enum State {
 		BLACK, WHITE, BLANK;
 		public static State getOppositeState(State state){
@@ -27,6 +22,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		}
 	}
 	
+	//Locations for tile images
 	public static final String BLACK_IMG = "../resources/black_tile.png";
 	public static final String WHITE_IMG = "../resources/white_tile.png";
 	public static final String BLACK_HI_IMG = "../resources/black_tile_highlight.png";
@@ -38,10 +34,12 @@ public class Tile extends JButton implements ActionListener, TileForm{
 	private int x;
 	private int y;
 	
+	//Creates a Tile on a board at [x,y]
 	public Tile(Board board, int x, int y){
 		this(State.BLANK, board, x, y);
 	}
 	
+	//Creates a Tile with a state on a board at [x,y]
 	public Tile(State state, Board board, int x, int y) {
 		this.board = board;
 		this.x = x;
@@ -58,6 +56,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
         setText(column+(x+1));
 	}
 	
+	//Returns the char value for an integer
 	private String getCharForNumber(int i) {
 	    return i > 0 && i < 27 ? String.valueOf((char)(i + 64)) : null;
 	}
@@ -70,6 +69,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		return y;
 	}
 	
+	//Responds to the clicking of a tile and passes to board.
 	public void actionPerformed(ActionEvent e) {
     	//Only accepts clicks on blank tiles
     	if (state == State.BLANK) {
@@ -78,6 +78,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
     	}
     }
 
+	//Flips a tile's state and then highlights
 	public void flip(){
 		if (state == State.BLACK) {
 			setState(State.WHITE);
@@ -88,10 +89,12 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		highlight();
 	}
 
+	//Is the tile blank?
 	public boolean isBlank(){
 		return state.equals(State.BLANK);
 	}
 	
+	//Black to white. Vice versa
 	public State getReverseState(){
 		if(state == State.BLACK)
 			return State.WHITE;
@@ -100,6 +103,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		}
 	}
 	
+	//Black to white. Vice versa. Blank to blank
 	public static State getOppositeState(State state){
 		if(state == State.BLANK)
 			return State.BLANK;
@@ -110,6 +114,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		}
 	}
 
+	//Sets the state of a tile and adds it to the board.
 	public void setState(State state){
 		if (this.state != state) {
 			board.removeTile(getState());
@@ -119,6 +124,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		}
 	}
 	
+	//Changes the image of a tile based off of the state.
 	private void setImage(State state) {
 		//Change image
 		Image img;
@@ -138,6 +144,7 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		setIcon(icon);
 	}
 
+	//Highlights a tile by swapping out images
 	public void highlight(){
 		Image img;
 		switch (state) {
@@ -156,10 +163,12 @@ public class Tile extends JButton implements ActionListener, TileForm{
 		setIcon(icon);
 	}
 	
+	//Un-highlights a tile
 	public void lowlight(){
 		setImage(state);
 	}
 
+	//The state of the tile. Black, white, blank
 	public State getState(){
 		return state;
 	}

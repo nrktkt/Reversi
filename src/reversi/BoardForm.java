@@ -3,6 +3,7 @@ package reversi;
 import java.util.Set;
 import reversi.Tile.State;
 
+//Interface that Tile and VirtualTile conform to.
 public interface BoardForm {
 	public static final int SIZE = 8;
 	public static final int LEFT = 0;
